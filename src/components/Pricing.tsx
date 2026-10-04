@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, ShieldCheck, Sparkles, Zap } from "lucide-react";
-import { EASE_OUT, WA } from "../lib/site";
+import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
@@ -21,8 +21,7 @@ const PLANS = [
       "Optimisé smartphone & tablette",
       "Devis gratuit, réponse 24–48h",
     ],
-    cta: "Choisir la formule Essentiel",
-    link: WA.essentiel,
+    preset: { type: "Site vitrine", budget: "< 500 €" },
     featured: false,
   },
   {
@@ -41,8 +40,7 @@ const PLANS = [
       "SEO avancé & fiche Google Business",
       "Interface d'admin — autonomie totale",
     ],
-    cta: "Obtenir mon devis Premium",
-    link: WA.premium,
+    preset: { type: "Site vitrine", budget: "500 – 1 000 €" },
     featured: true,
   },
   {
@@ -60,15 +58,14 @@ const PLANS = [
       "Petites modifs de contenu incluses",
       "Support prioritaire sous 24h",
     ],
-    cta: "Souscrire à la maintenance",
-    link: WA.maintenance,
+    preset: { type: "Maintenance" },
     featured: false,
   },
 ];
 
 export function Pricing() {
   return (
-    <section id="tarifs" className="relative border-y border-line bg-coal">
+    <section id="tarifs" className="relative overflow-hidden border-y border-line bg-coal">
       <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-lime/[0.05] blur-[130px]" />
       <div className="relative mx-auto max-w-[1600px] px-5 py-24 md:px-10 md:py-36">
         <SectionHeading
@@ -103,7 +100,7 @@ export function Pricing() {
                 data-cursor="hover"
               >
                 {featured && (
-                  <span className="absolute -top-3.5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-milk px-5 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white shadow-[0_8px_24px_rgba(76,29,149,0.25)]">
+                  <span className="absolute -top-3.5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-milk px-5 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-white shadow-[0_8px_24px_rgba(76,29,149,0.25)]">
                     <Sparkles className="h-3 w-3 text-lime" />
                     Recommandé
                   </span>
@@ -118,8 +115,8 @@ export function Pricing() {
                     <Icon className="h-5 w-5" />
                   </span>
                   <span
-                    className={`font-mono text-[10px] uppercase tracking-[0.2em] ${
-                      featured ? "text-white/60" : "text-fog"
+                    className={`font-mono text-[11px] uppercase tracking-[0.2em] ${
+                      featured ? "text-white/90" : "text-fog"
                     }`}
                   >
                     {p.tag}
@@ -131,7 +128,7 @@ export function Pricing() {
                 </h3>
                 <p
                   className={`mt-3 text-sm leading-relaxed ${
-                    featured ? "text-white/70" : "text-fog"
+                    featured ? "text-white/90" : "text-fog"
                   }`}
                 >
                   {p.desc}
@@ -145,8 +142,8 @@ export function Pricing() {
                   >
                     <div>
                       <p
-                        className={`font-mono text-[10px] uppercase tracking-[0.2em] ${
-                          featured ? "text-white/60" : "text-fog"
+                        className={`font-mono text-[11px] uppercase tracking-[0.2em] ${
+                          featured ? "text-white/90" : "text-fog"
                         }`}
                       >
                         {p.prefix}
@@ -178,19 +175,19 @@ export function Pricing() {
                   ))}
                 </ul>
 
-                <a
-                  href={p.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => goToBrief(p.preset)}
+                  aria-label={`${CTA_LABEL} — ${p.name}`}
                   className={`group mt-9 flex items-center justify-center gap-2.5 rounded-full py-4.5 font-mono text-xs font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
                     featured
                       ? "bg-white text-lime hover:bg-white/90"
                       : "border border-line text-milk hover:border-lime hover:bg-lime hover:text-white"
                   } mt-auto`}
                 >
-                  {p.cta}
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </a>
+                  {CTA_LABEL}
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+                </button>
               </motion.div>
             );
           })}

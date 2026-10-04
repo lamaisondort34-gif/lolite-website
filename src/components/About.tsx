@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Fingerprint, MapPin, MessageCircle, Timer } from "lucide-react";
-import { EASE_OUT, WA } from "../lib/site";
+import { ArrowUpRight, Fingerprint, MapPin, Timer } from "lucide-react";
+import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { Magnetic } from "./Magnetic";
@@ -62,9 +62,9 @@ export function About() {
                   <span className="grid h-11 w-11 place-items-center rounded-xl bg-lime/10 text-lime transition-transform duration-500 group-hover:scale-110">
                     <v.icon className="h-5 w-5" />
                   </span>
-                  <h4 className="mt-5 font-display text-lg font-bold tracking-tight text-milk">
+                  <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-milk">
                     {v.title}
-                  </h4>
+                  </h3>
                   <p className="mt-2 text-sm leading-relaxed text-fog">
                     {v.desc}
                   </p>
@@ -83,9 +83,14 @@ export function About() {
         >
           <div className="group overflow-hidden rounded-2xl border border-line">
             <img
-              src="/images/about-studio.jpg"
-              alt="Le studio LOLITE — espace de création"
+              src="/images/about-studio-800.webp"
+              srcSet="/images/about-studio-800.webp 800w, /images/about-studio.webp 1400w"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              width={1400}
+              height={1050}
+              alt="Bureau lumineux avec un écran affichant la maquette d'un site d'agence web"
               loading="lazy"
+              decoding="async"
               className="aspect-[4/3] w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
             />
           </div>
@@ -97,7 +102,7 @@ export function About() {
               <p className="font-display text-sm font-bold uppercase text-milk">
                 Montpellier
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-fog">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-fog">
                 France & DOM-TOM
               </p>
             </div>
@@ -113,16 +118,14 @@ export function About() {
             projet, c'est gratuit et sans engagement.
           </p>
           <Magnetic strength={0.25}>
-            <a
-              href={WA.contact}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => goToBrief()}
               className="group flex items-center gap-3 rounded-full bg-lime px-8 py-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-lime-deep"
             >
-              <MessageCircle className="h-4 w-4" />
-              Échanger avec le studio
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </a>
+              {CTA_LABEL}
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+            </button>
           </Magnetic>
         </div>
       </Reveal>

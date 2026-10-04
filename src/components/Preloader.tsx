@@ -7,7 +7,7 @@ export function Preloader({ onDone }: { onDone: () => void }) {
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    const duration = 1500;
+    const duration = 900;
     const start = performance.now();
     let raf: number;
     const tick = (t: number) => {
@@ -17,7 +17,7 @@ export function Preloader({ onDone }: { onDone: () => void }) {
       if (p < 1) raf = requestAnimationFrame(tick);
       else {
         setLeaving(true);
-        setTimeout(onDone, 850);
+        setTimeout(onDone, 700);
       }
     };
     raf = requestAnimationFrame(tick);
@@ -28,7 +28,7 @@ export function Preloader({ onDone }: { onDone: () => void }) {
     <motion.div
       className="fixed inset-0 z-[400] flex flex-col justify-between overflow-hidden bg-ink px-6 py-6 md:px-10 md:py-8"
       animate={leaving ? { y: "-100%" } : { y: 0 }}
-      transition={{ duration: 0.85, ease: EASE }}
+      transition={{ duration: 0.7, ease: EASE }}
     >
       <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.25em] text-fog">
         <span>Studio web — Montpellier</span>
@@ -45,9 +45,9 @@ export function Preloader({ onDone }: { onDone: () => void }) {
             className="flex flex-col items-center"
           >
             <img
-              src="/images/logo-lolite.png"
+              src="/images/logo-lolite.webp"
               alt="LOLITE Web Agency"
-              className="h-[28vw] max-h-[260px] w-auto mix-blend-multiply sm:h-[22vw]"
+              width={547} height={520} className="h-[28vw] max-h-[260px] w-auto sm:h-[22vw]"
               draggable={false}
             />
           </motion.div>

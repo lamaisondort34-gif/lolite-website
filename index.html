@@ -2,43 +2,82 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237C3AED'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FAFAFD'/%3E%3C/svg%3E" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="LOLITE — Studio web à Montpellier. Sites vitrines d'exception sur-mesure, livrés en 1 à 2 semaines. Devis gratuit sous 24-48h. France entière & DOM-TOM." />
-    <meta name="theme-color" content="#FAFAFD" />
-    <meta name="keywords" content="agence web, création site, Montpellier, site vitrine, design, freelance" />
+
+    <!-- SEO : title, description et canonical sont réécrits par page au build (scripts/postbuild.mjs) -->
+    <title>LOLITE — Création de sites vitrines sur-mesure à Montpellier | Livrés en 14 jours</title>
+    <meta name="description" content="Studio web à Montpellier : sites vitrines sur-mesure, rapides et optimisés pour Google, livrés en 1 à 2 semaines dès 450 €. Devis gratuit sous 24–48h, partout en France et DOM-TOM." />
+    <link rel="canonical" href="https://lolite-agency.fr/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="author" content="LOLITE Studio Web" />
-    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#7c3aed" />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp…) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://lolite-agency.fr" />
-    <meta property="og:title" content="LOLITE — Studio Web | Sites vitrines d'exception" />
-    <meta property="og:description" content="Sites vitrines sur-mesure livrés en 1 à 2 semaines. Devis gratuit sous 24-48h." />
-    <meta property="og:image" content="https://lolite-agency.fr/images/hero-visual.jpg" />
+    <meta property="og:site_name" content="LOLITE Studio Web" />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:url" content="https://lolite-agency.fr/" />
+    <meta property="og:title" content="LOLITE — Création de sites vitrines sur-mesure à Montpellier | Livrés en 14 jours" />
+    <meta property="og:description" content="Studio web à Montpellier : sites vitrines sur-mesure, rapides et optimisés pour Google, livrés en 1 à 2 semaines dès 450 €. Devis gratuit sous 24–48h, partout en France et DOM-TOM." />
+    <meta property="og:image" content="https://lolite-agency.fr/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LOLITE — Des sites web d'exception, livrés en 14 jours. Dès 450 €, devis gratuit." />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://lolite-agency.fr" />
-    <meta property="twitter:title" content="LOLITE — Studio Web | Sites vitrines d'exception" />
-    <meta property="twitter:description" content="Sites vitrines sur-mesure livrés en 1 à 2 semaines. Devis gratuit sous 24-48h." />
-    <meta property="twitter:image" content="https://lolite-agency.fr/images/hero-visual.jpg" />
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LOLITE — Création de sites vitrines sur-mesure à Montpellier | Livrés en 14 jours" />
+    <meta name="twitter:description" content="Studio web à Montpellier : sites vitrines sur-mesure, rapides et optimisés pour Google, livrés en 1 à 2 semaines dès 450 €. Devis gratuit sous 24–48h, partout en France et DOM-TOM." />
+    <meta name="twitter:image" content="https://lolite-agency.fr/og-image.jpg" />
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://lolite-agency.fr" />
+    <!-- Données structurées (fiche entreprise pour Google) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "LOLITE Studio Web",
+        "url": "https://lolite-agency.fr/",
+        "logo": "https://lolite-agency.fr/icon-512.png",
+        "image": "https://lolite-agency.fr/og-image.jpg",
+        "description": "Création de sites vitrines sur-mesure, livrés en 1 à 2 semaines.",
+        "telephone": "+33663530157",
+        "priceRange": "€€",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Montpellier",
+          "postalCode": "34000",
+          "addressCountry": "FR"
+        },
+        "areaServed": ["FR", "GP", "MQ", "GF", "RE", "YT"],
+        "sameAs": ["https://www.instagram.com/lolite_agency/"]
+      }
+    </script>
 
-    <!-- Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-
-    <title>LOLITE — Studio Web | Sites vitrines d'exception, livrés en 14 jours</title>
   </head>
   <body>
+    <noscript>
+      <p style="padding:24px;font-family:sans-serif">
+        Ce site nécessite JavaScript. Contactez-nous directement :
+        <a href="https://wa.me/33663530157">WhatsApp +33 6 63 53 01 57</a>
+      </p>
+    </noscript>
+
+    <!-- Formulaire « fantôme » : permet à Netlify Forms de détecter le brief au déploiement. -->
+    <form name="brief" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input name="bot-field" />
+      <input name="name" />
+      <input name="contact" />
+      <input name="type" />
+      <input name="budget" />
+      <textarea name="message"></textarea>
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

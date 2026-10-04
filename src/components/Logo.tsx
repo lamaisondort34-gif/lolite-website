@@ -58,9 +58,9 @@ export function Logo({
   if (variant === "brand") {
     return (
       <img
-        src="/images/logo-lolite.png"
+        src="/images/logo-lolite.webp"
         alt="LOLITE Web Agency"
-        className={`mix-blend-multiply ${className}`}
+        className={className}
         style={{ height: size }}
         draggable={false}
       />

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { initLenis } from "./lib/site";
+import { initLenis, scrollTo } from "./lib/site";
+import routes from "./lib/routes.json";
 import { Preloader } from "./components/Preloader";
 import { Cursor } from "./components/Cursor";
 import { Nav } from "./components/Nav";
@@ -17,14 +18,53 @@ import { Faq } from "./components/Faq";
 import { Footer } from "./components/Footer";
 import { WhatsAppFloat } from "./components/WhatsAppFloat";
 import { CookieBanner } from "./components/CookieBanner";
-import { PrivacyPolicy } from "./components/PrivacyPolicy";
-import { TermsOfService } from "./components/TermsOfService";
-import { CookiePolicy } from "./components/CookiePolicy";
-import { RefundPolicy } from "./components/RefundPolicy";
+
+// Pages secondaires chargées à la demande : elles n'alourdissent pas l'accueil.
+const PAGES: Record<string, React.LazyExoticComponent<() => React.JSX.Element>> = {
+  "/mentions-legales": lazy(() => import("./components/MentionsLegales").then((m) => ({ default: m.MentionsLegales }))),
+  "/confidentialite": lazy(() => import("./components/PrivacyPolicy").then((m) => ({ default: m.PrivacyPolicy }))),
+  "/cgu": lazy(() => import("./components/TermsOfService").then((m) => ({ default: m.TermsOfService }))),
+  "/cookies": lazy(() => import("./components/CookiePolicy").then((m) => ({ default: m.CookiePolicy }))),
+  "/remboursement": lazy(() => import("./components/RefundPolicy").then((m) => ({ default: m.RefundPolicy }))),
+};
+const NotFound = lazy(() => import("./components/NotFound").then((m) => ({ default: m.NotFound })));
+
+// Anciennes URLs « ?page=xxx » → nouvelles URLs propres (aussi gérées en 301 côté Netlify).
+const LEGACY: Record<string, string> = {
+  privacy: "/confidentialite",
+  terms: "/cgu",
+  cookies: "/cookies",
+  refund: "/remboursement",
+};
+
+function currentPath() {
+  const legacy = LEGACY[new URLSearchParams(window.location.search).get("page") ?? ""];
+  if (legacy) {
+    window.history.replaceState(null, "", legacy);
+    return legacy;
+  }
+  const p = window.location.pathname.replace(/\/+$/, "");
+  return p === "" ? "/" : p;
+}
+
+function shouldShowPreloader(isHome: boolean) {
+  if (!isHome || window.location.hash) return false;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  try {
+    // Une seule fois par session : on ne fait pas attendre un visiteur qui revient.
+    if (sessionStorage.getItem("lolite-preloaded")) return false;
+    sessionStorage.setItem("lolite-preloaded", "1");
+  } catch {
+    /* stockage indisponible */
+  }
+  return true;
+}
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState("home");
+  const [path] = useState(currentPath);
+  const isHome = path === "/";
+  const Page = isHome ? null : PAGES[path] ?? NotFound;
+  const [loading, setLoading] = useState(() => shouldShowPreloader(isHome));
 
   useEffect(() => {
     initLenis();
@@ -34,20 +74,29 @@ export default function App() {
     document.body.style.overflow = loading ? "hidden" : "";
   }, [loading]);
 
-  // Vérifier la page à afficher via query string
+  // Arrivée sur /#brief (depuis une autre page) : on scrolle une fois la page prête.
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const page = params.get("page");
-    if (page) {
-      setCurrentPage(page);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      setCurrentPage("home");
+    if (!loading && isHome && window.location.hash.length > 1) {
+      const id = window.location.hash;
+      const t = setTimeout(() => scrollTo(id), 150);
+      return () => clearTimeout(t);
     }
-  }, []);
+  }, [loading, isHome]);
+
+  // Titre de l'onglet (les balises meta sont aussi pré-générées au build, cf. scripts/postbuild.mjs).
+  useEffect(() => {
+    const meta = (routes as Record<string, { title: string }>)[path];
+    document.title = meta ? meta.title : "Page introuvable — LOLITE Studio Web";
+  }, [path]);
 
   return (
     <div className="noise relative min-h-screen bg-ink font-sans text-milk">
+      <a
+        href="#contenu"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[500] focus:rounded-full focus:bg-milk focus:px-5 focus:py-3 focus:text-sm focus:text-white"
+      >
+        Aller au contenu
+      </a>
       <Cursor />
 
       <AnimatePresence>
@@ -56,8 +105,8 @@ export default function App() {
 
       <Nav ready={!loading} />
 
-      {currentPage === "home" && (
-        <main>
+      {isHome ? (
+        <main id="contenu">
           <Hero ready={!loading} />
           <Marquee />
           <Services />
@@ -70,12 +119,9 @@ export default function App() {
           <Brief />
           <Faq />
         </main>
+      ) : (
+        <Suspense fallback={<div className="min-h-svh" />}>{Page && <Page />}</Suspense>
       )}
-
-      {currentPage === "privacy" && <PrivacyPolicy />}
-      {currentPage === "terms" && <TermsOfService />}
-      {currentPage === "cookies" && <CookiePolicy />}
-      {currentPage === "refund" && <RefundPolicy />}
 
       <Footer />
       <WhatsAppFloat />

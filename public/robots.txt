@@ -1,13 +1,4 @@
-# robots.txt pour LOLITE
-# https://www.robotstxt.org
-
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /*.json$
 
-# Sitemap
 Sitemap: https://lolite-agency.fr/sitemap.xml
-
-# Crawl delay (optionnel)
-Crawl-delay: 1

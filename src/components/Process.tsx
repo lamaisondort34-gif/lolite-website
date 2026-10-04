@@ -72,7 +72,7 @@ export function Process() {
                   </span>
                 </div>
                 <div>
-                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.24em] text-lime">
+                  <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.24em] text-lime">
                     {s.meta}
                   </p>
                   <h3 className="font-display text-2xl font-bold tracking-tight text-milk">

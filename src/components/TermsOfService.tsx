@@ -1,113 +1,80 @@
-import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
-import { EASE_OUT, scrollTo } from "../lib/site";
+import { SITE_URL, WA_DISPLAY } from "../lib/site";
+import { LegalLayout } from "./LegalLayout";
 
 export function TermsOfService() {
   return (
-    <section id="terms" className="mx-auto max-w-[1600px] px-5 py-24 md:px-10 md:py-36">
-      <motion.button
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        onClick={() => scrollTo("#")}
-        className="mb-12 flex items-center gap-2 text-milk/70 hover:text-milk transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Retour
-      </motion.button>
+    <LegalLayout title="Conditions générales d'utilisation">
+      <h2>1. Objet</h2>
+      <p>
+        Les présentes conditions générales d'utilisation (CGU) encadrent l'accès
+        et l'utilisation du site <strong>{SITE_URL.replace("https://", "")}</strong>{" "}
+        édité par LOLITE (voir les <a href="/mentions-legales">mentions légales</a>).
+        Naviguer sur le site vaut acceptation des CGU.
+      </p>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE_OUT }}
-      >
-        <h1 className="font-display text-5xl font-extrabold tracking-tight text-milk md:text-6xl mb-8">
-          Conditions d'utilisation
-        </h1>
+      <h2>2. Accès au site</h2>
+      <p>
+        Le site est accessible gratuitement, 24h/24 et 7j/7, sauf interruption pour
+        maintenance ou cas de force majeure. LOLITE ne peut être tenue responsable
+        d'une indisponibilité temporaire.
+      </p>
 
-        <div className="prose prose-invert max-w-3xl space-y-8 text-fog">
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">1. Acceptation des conditions</h2>
-            <p>
-              En accédant et en utilisant ce site web, vous acceptez d'être lié par ces Conditions
-              d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser ce site.
-            </p>
-          </div>
+      <h2>3. Services proposés</h2>
+      <p>
+        Le site présente les prestations de création de sites internet de LOLITE
+        et permet de demander un devis gratuit et sans engagement. Les prix
+        affichés sont indicatifs (« à partir de ») : seul le devis signé engage
+        les parties, selon les conditions qui y sont précisées et notre{" "}
+        <a href="/remboursement">politique d'annulation et de remboursement</a>.
+      </p>
 
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">2. Utilisation du site</h2>
-            <p>Vous vous engagez à :</p>
-            <ul className="list-disc pl-6 space-y-2 mt-3">
-              <li>Utiliser ce site à titre personnel et non commercial</li>
-              <li>Ne pas modifier ou copier le contenu sans autorisation</li>
-              <li>Ne pas utiliser ce site pour des activités illégales ou nuisibles</li>
-              <li>Ne pas accéder au site par des moyens automatisés (scraping, bots)</li>
-            </ul>
-          </div>
+      <h2>4. Utilisation du formulaire de contact</h2>
+      <p>L'utilisateur s'engage à :</p>
+      <ul>
+        <li>fournir des informations exactes et le concernant ;</li>
+        <li>ne pas envoyer de contenu illicite, injurieux ou de messages non sollicités (spam) ;</li>
+        <li>ne pas tenter de perturber le fonctionnement du site (robots, envois automatisés, intrusion).</li>
+      </ul>
+      <p>
+        LOLITE se réserve le droit d'ignorer toute demande abusive ou manifestement
+        automatisée.
+      </p>
 
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">3. Propriété intellectuelle</h2>
-            <p>
-              Tout le contenu de ce site (textes, images, logos, code) est la propriété exclusive
-              de LOLITE ou de ses fournisseurs. Vous n'avez pas le droit de le réutiliser sans
-              permission écrite.
-            </p>
-          </div>
+      <h2>5. Propriété intellectuelle</h2>
+      <p>
+        Textes, visuels, logo, charte graphique et code du site sont protégés.
+        Toute reproduction ou réutilisation sans autorisation écrite est interdite.
+        Les réalisations présentées restent la propriété de leurs titulaires
+        respectifs.
+      </p>
 
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">4. Limitation de responsabilité</h2>
-            <p>
-              LOLITE ne sera pas responsable des dommages indirects, accidentels ou consécutifs
-              découlant de votre utilisation ou incapacité à utiliser le site.
-            </p>
-          </div>
+      <h2>6. Responsabilité</h2>
+      <p>
+        LOLITE s'efforce de fournir des informations exactes et à jour, sans
+        pouvoir le garantir de manière absolue. Les liens vers des sites tiers
+        (WhatsApp, Instagram, sites clients…) sont fournis à titre pratique :
+        LOLITE n'est pas responsable de leur contenu.
+      </p>
 
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">5. Devis et services</h2>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Les devis sont gratuits et sans engagement</li>
-              <li>Les délais et prix mentionnés sont estimatifs</li>
-              <li>Un contrat séparé signé électroniquement formalisera la commande</li>
-              <li>Les modifications de projet peuvent affecter les délais et tarifs</li>
-            </ul>
-          </div>
+      <h2>7. Données personnelles</h2>
+      <p>
+        Voir notre <a href="/confidentialite">politique de confidentialité</a> et
+        notre <a href="/cookies">politique cookies</a>.
+      </p>
 
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">6. Paiement</h2>
-            <p>
-              Le paiement est exigible selon les modalités convenues dans le contrat.
-              Les retards de paiement peuvent entraîner la suspension des services.
-            </p>
-          </div>
+      <h2>8. Modification des CGU</h2>
+      <p>
+        LOLITE peut modifier les CGU à tout moment. La version applicable est
+        celle en ligne au jour de votre visite.
+      </p>
 
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">7. Liens externes</h2>
-            <p>
-              Ce site peut contenir des liens vers des sites tiers. LOLITE n'est pas responsable
-              du contenu, de la disponibilité ou de la politique de confidentialité de ces sites.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">8. Modification des conditions</h2>
-            <p>
-              LOLITE se réserve le droit de modifier ces conditions à tout moment.
-              Les modifications entrent en vigueur immédiatement.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-milk mb-4">9. Contact</h2>
-            <p>
-              Pour toute question concernant ces conditions :<br />
-              Email : <strong>contact@lolite-agency.fr</strong><br />
-              WhatsApp : <strong>+33 6 63 53 01 57</strong>
-            </p>
-            <p className="mt-3 text-sm text-fog">
-              <em>Dernière mise à jour : {new Date().toLocaleDateString('fr-FR')}</em>
-            </p>
-          </div>
-        </div>
-      </motion.div>
-    </section>
+      <h2>9. Droit applicable et litiges</h2>
+      <p>
+        Les CGU sont soumises au droit français. En cas de litige, une solution
+        amiable sera recherchée en priorité (téléphone / WhatsApp : {WA_DISPLAY}). À défaut, les
+        tribunaux compétents seront ceux du ressort de Montpellier, sous réserve
+        des règles protectrices applicables aux consommateurs.
+      </p>
+    </LegalLayout>
   );
 }
