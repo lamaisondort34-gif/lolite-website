@@ -1,28 +1,32 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Globe2, Mail, Phone, Video } from "lucide-react";
-import { EASE_OUT, WA } from "../lib/site";
+import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { Magnetic } from "./Magnetic";
 
 const SECTORS = [
   {
-    img: "/images/sector-archi.jpg",
+    img: "sector-archi",
+    alt: "Villa d'architecte contemporaine en béton éclairée au crépuscule",
     title: "Architectes & Designers",
     desc: "Un book haut de gamme aux visuels épurés et percutants pour valoriser vos projets de construction et d'aménagement.",
   },
   {
-    img: "/images/sector-coach.jpg",
+    img: "sector-coach",
+    alt: "Coach sportif s'entraînant avec des cordes ondulatoires dans une salle",
     title: "Coachs & Bien-être",
     desc: "Présentez vos formules, vos tarifs et vos avis clients — avec réservation directe de vos séances en ligne.",
   },
   {
-    img: "/images/sector-artisan.jpg",
+    img: "sector-artisan",
+    alt: "Boulanger pétrissant la pâte à la main dans son atelier",
     title: "Artisans & Restauration",
     desc: "Pâtissiers, menuisiers, restaurateurs : attirez une clientèle de proximité avec une vitrine claire et géolocalisée.",
   },
   {
-    img: "/images/sector-liberal.jpg",
+    img: "sector-liberal",
+    alt: "Avocat à son bureau dans un cabinet avec vue sur la ville",
     title: "Professions libérales & TPE",
     desc: "Avocats, consultants, thérapeutes : établissez votre crédibilité en ligne avec une vitrine élégante et rassurante.",
   },
@@ -51,29 +55,34 @@ export function Sectors() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.9, ease: EASE_OUT, delay: (i % 2) * 0.12 }}
-            className={`group relative overflow-hidden rounded-2xl border border-line ${
+            className={`group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-coal ${
               i % 2 === 1 ? "lg:translate-y-10" : ""
             }`}
             data-cursor="hover"
           >
-            <div className="relative aspect-[16/11] overflow-hidden">
+            <div className="relative aspect-[16/10] overflow-hidden">
               <img
-                src={s.img}
-                alt={s.title}
+                src={`/images/${s.img}-800.webp`}
+                srcSet={`/images/${s.img}-800.webp 800w, /images/${s.img}.webp 1400w`}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                width={1400}
+                height={963}
+                alt={s.alt}
                 loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/35 to-transparent" />
-              <span className="absolute left-5 top-5 rounded-full border border-milk/20 bg-ink/50 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-milk backdrop-blur-md">
+              <span className="absolute left-5 top-5 rounded-full bg-coal/90 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-milk backdrop-blur-md">
                 0{i + 1}
               </span>
             </div>
-            <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
+            {/* Texte sous la photo (et non par-dessus) : lisible quelle que soit l'image. */}
+            <div className="flex-1 border-t border-line p-6 md:p-8">
               <div className="mb-3 h-px w-10 bg-lime transition-all duration-500 group-hover:w-20" />
               <h3 className="font-display text-2xl font-bold tracking-tight text-milk md:text-3xl">
                 {s.title}
               </h3>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-milk/70">
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-fog">
                 {s.desc}
               </p>
             </div>
@@ -107,7 +116,7 @@ export function Sectors() {
               ].map((c) => (
                 <span
                   key={c.label}
-                  className="flex items-center gap-2 rounded-full border border-line px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-milk/80"
+                  className="flex items-center gap-2 rounded-full border border-line px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-milk/80"
                 >
                   <c.icon className="h-3.5 w-3.5 text-lime" />
                   {c.label}
@@ -116,15 +125,14 @@ export function Sectors() {
             </div>
           </div>
           <Magnetic strength={0.25}>
-            <a
-              href={WA.projet}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => goToBrief()}
               className="group flex shrink-0 items-center gap-3 rounded-full bg-lime px-8 py-5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-lime-deep"
             >
-              Discuter de mon projet
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </a>
+              {CTA_LABEL}
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+            </button>
           </Magnetic>
         </div>
       </Reveal>

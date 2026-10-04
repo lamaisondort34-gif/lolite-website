@@ -1,0 +1,38 @@
+{
+  "/": {
+    "title": "LOLITE — Création de sites vitrines sur-mesure à Montpellier | Livrés en 14 jours",
+    "description": "Studio web à Montpellier : sites vitrines sur-mesure, rapides et optimisés pour Google, livrés en 1 à 2 semaines dès 450 €. Devis gratuit sous 24–48h, partout en France et DOM-TOM.",
+    "priority": "1.0",
+    "changefreq": "monthly"
+  },
+  "/mentions-legales": {
+    "title": "Mentions légales — LOLITE Studio Web",
+    "description": "Mentions légales du site lolite-agency.fr : éditeur, hébergeur, propriété intellectuelle et contact.",
+    "priority": "0.3",
+    "changefreq": "yearly"
+  },
+  "/confidentialite": {
+    "title": "Politique de confidentialité — LOLITE Studio Web",
+    "description": "Comment LOLITE collecte, utilise et protège vos données personnelles (RGPD) : finalités, durées de conservation et vos droits.",
+    "priority": "0.3",
+    "changefreq": "yearly"
+  },
+  "/cgu": {
+    "title": "Conditions générales d'utilisation (CGU) — LOLITE Studio Web",
+    "description": "Conditions générales d'utilisation du site lolite-agency.fr : accès, propriété intellectuelle, responsabilité et droit applicable.",
+    "priority": "0.3",
+    "changefreq": "yearly"
+  },
+  "/cookies": {
+    "title": "Politique cookies — LOLITE Studio Web",
+    "description": "Quels cookies utilise le site LOLITE, à quoi ils servent et comment modifier votre choix à tout moment.",
+    "priority": "0.2",
+    "changefreq": "yearly"
+  },
+  "/remboursement": {
+    "title": "Politique d'annulation et de remboursement — LOLITE Studio Web",
+    "description": "Conditions d'annulation, de remboursement et de révisions des prestations de création de site LOLITE.",
+    "priority": "0.2",
+    "changefreq": "yearly"
+  }
+}

@@ -1,6 +1,17 @@
-import { ArrowUp, ArrowUpRight, MessageCircle } from "lucide-react";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { EASE_OUT, scrollTo, WA, WA_DISPLAY } from "../lib/site";
+import {
+  CONTACT_EMAIL,
+  CTA_LABEL,
+  EASE_OUT,
+  goToBrief,
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+  scrollTo,
+  WA,
+  WA_DISPLAY,
+} from "../lib/site";
+import { ANALYTICS_ENABLED, openCookieSettings } from "../lib/analytics";
 import { Magnetic } from "./Magnetic";
 import { Logo } from "./Logo";
 
@@ -15,11 +26,22 @@ const LINKS = [
 ];
 
 const LEGAL_LINKS = [
-  { label: "Confidentialité", href: "?page=privacy" },
-  { label: "Conditions", href: "?page=terms" },
-  { label: "Cookies", href: "?page=cookies" },
-  { label: "Remboursement", href: "?page=refund" },
+  { label: "Mentions légales", href: "/mentions-legales" },
+  { label: "Confidentialité", href: "/confidentialite" },
+  { label: "CGU", href: "/cgu" },
+  { label: "Cookies", href: "/cookies" },
+  { label: "Remboursement", href: "/remboursement" },
 ];
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+    </svg>
+  );
+}
 
 export function Footer() {
   return (
@@ -38,16 +60,14 @@ export function Footer() {
             </h2>
           </div>
           <Magnetic strength={0.3}>
-            <a
-              href={WA.devis}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => goToBrief()}
               className="group flex items-center gap-3 rounded-full bg-lime px-8 py-5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-lime-deep"
             >
-              <MessageCircle className="h-4 w-4" />
-              Devis gratuit
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </a>
+              {CTA_LABEL}
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+            </button>
           </Magnetic>
         </div>
 
@@ -65,24 +85,29 @@ export function Footer() {
           </div>
 
           <div className="md:justify-self-center">
-            <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+            <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.24em] text-fog">
               Navigation
             </p>
-            <nav className="grid grid-cols-2 gap-x-10 gap-y-3">
+            <nav aria-label="Navigation du pied de page" className="grid grid-cols-2 gap-x-10 gap-y-3">
               {LINKS.map((l) => (
-                <button
+                <a
                   key={l.href}
-                  onClick={() => scrollTo(l.href)}
-                  className="link-underline w-fit text-sm text-milk/80 transition-colors hover:text-lime"
+                  href={`/${l.href}`}
+                  onClick={(e) => {
+                    if (window.location.pathname !== "/") return;
+                    e.preventDefault();
+                    scrollTo(l.href);
+                  }}
+                  className="link-underline w-fit text-sm text-milk/80 transition-colors hover:text-lime-deep"
                 >
                   {l.label}
-                </button>
+                </a>
               ))}
             </nav>
           </div>
 
           <div className="md:justify-self-end">
-            <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+            <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.24em] text-fog">
               Contact direct
             </p>
             <a
@@ -95,6 +120,20 @@ export function Footer() {
               <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
             </a>
             <p className="mt-3 text-sm text-fog">Réponse sous 24–48h, 7j/7.</p>
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="mt-3 block text-sm text-milk/80 underline-offset-4 hover:text-lime-deep hover:underline"
+            >
+              {CONTACT_EMAIL}
+            </a>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 flex items-center gap-2 text-sm text-milk/80 underline-offset-4 hover:text-lime-deep hover:underline"
+            >
+              <InstagramIcon className="h-4 w-4" />@{INSTAGRAM_HANDLE}
+            </a>
             <Magnetic strength={0.3} className="mt-8">
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -121,19 +160,23 @@ export function Footer() {
         </div>
 
         {/* Legal links */}
-        <div className="flex flex-wrap justify-center gap-6 border-t border-line py-6 font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
+        <nav
+          aria-label="Informations légales"
+          className="flex flex-wrap justify-center gap-x-6 gap-y-3 border-t border-line py-6 font-mono text-[11px] uppercase tracking-[0.2em] text-fog"
+        >
           {LEGAL_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="transition-colors hover:text-lime"
-            >
+            <a key={l.href} href={l.href} className="transition-colors hover:text-lime-deep">
               {l.label}
             </a>
           ))}
-        </div>
+          {ANALYTICS_ENABLED && (
+            <button type="button" onClick={openCookieSettings} className="uppercase transition-colors hover:text-lime-deep">
+              Gérer les cookies
+            </button>
+          )}
+        </nav>
 
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-line pt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-fog md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-fog md:flex-row">
           <p>© 2026 LOLITE — Tous droits réservés</p>
           <p>
             Conçu & développé à Montpellier<span className="text-lime">.</span>

@@ -45,7 +45,7 @@ export function SectionHeading({
 
 export function Chip({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-line px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-fog transition-colors duration-300 hover:border-lime/50 hover:text-milk">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-line px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-fog transition-colors duration-300 hover:border-lime/50 hover:text-milk">
       <ArrowUpRight className="h-3 w-3 text-lime" />
       {children}
     </span>

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Outfit Variable", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
@@ -13,7 +13,7 @@
   --color-line: rgba(22, 16, 43, 0.1);
   --color-lime: #7c3aed; /* violet accent */
   --color-lime-deep: #6d28d9;
-  --color-fog: #6f6a80; /* muted gray-violet */
+  --color-fog: #5e5872; /* muted gray-violet — contraste ≥ 5.8:1 sur tous les fonds (WCAG AA) */
   --color-milk: #16102b; /* main text — deep violet-black */
 
   --animate-marquee: marquee 30s linear infinite;
@@ -44,6 +44,8 @@
 
 html {
   scroll-behavior: auto;
+  /* filet de sécurité anti-scroll horizontal sur mobile (iOS ignore overflow-x sur body) */
+  overflow-x: clip;
 }
 
 html.lenis,
@@ -187,4 +189,85 @@ input,
 textarea,
 select {
   outline: none;
+}
+
+/* ---- pages légales ---- */
+.legal {
+  color: var(--color-fog);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.legal > * + * {
+  margin-top: 1rem;
+}
+.legal h2 {
+  margin-top: 2.75rem;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-milk);
+}
+.legal strong {
+  color: var(--color-milk);
+}
+.legal ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+.legal li + li {
+  margin-top: 0.4rem;
+}
+.legal a {
+  color: var(--color-lime-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.legal th,
+.legal td {
+  border: 1px solid var(--color-line);
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.legal th {
+  background: var(--color-carbon);
+  color: var(--color-milk);
+}
+.legal-button {
+  border-radius: 999px;
+  background: var(--color-lime);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.legal-button:hover {
+  background: var(--color-lime-deep);
+}
+
+/* ---- accessibilité ---- */
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

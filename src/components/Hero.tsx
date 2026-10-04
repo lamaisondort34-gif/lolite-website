@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight, MessageCircle } from "lucide-react";
-import { EASE, EASE_OUT, scrollTo, WA } from "../lib/site";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { CTA_LABEL, EASE, EASE_OUT, goToBrief, scrollTo } from "../lib/site";
 import { Magnetic } from "./Magnetic";
 import { LineReveal } from "./Reveal";
 
@@ -29,7 +29,7 @@ export function Hero({ ready }: { ready: boolean }) {
     >
       {/* glow */}
       <div className="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full bg-lime/[0.055] blur-[120px]" />
-      <div className="pointer-events-none absolute -left-52 bottom-0 h-[480px] w-[480px] rounded-full bg-lime/[0.04] blur-[120px]" />
+      <div className="pointer-events-none absolute -left-52 top-[45svh] h-[480px] w-[480px] rounded-full bg-lime/[0.04] blur-[120px]" />
 
       <motion.div
         style={{ opacity }}
@@ -112,26 +112,26 @@ export function Hero({ ready }: { ready: boolean }) {
               className="mt-9 flex flex-wrap items-center gap-4"
             >
               <Magnetic strength={0.3}>
-                <a
-                  href={WA.devis}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => goToBrief()}
                   className="group flex items-center gap-3 rounded-full bg-lime px-7 py-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:bg-lime-deep"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  Devis gratuit en 48h
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </a>
-              </Magnetic>
-              <Magnetic strength={0.3}>
-                <button
-                  onClick={() => scrollTo("#tarifs")}
-                  className="group flex items-center gap-3 rounded-full border border-line px-7 py-4 font-mono text-xs uppercase tracking-[0.18em] text-milk transition-all duration-300 hover:border-lime hover:text-lime"
-                >
-                  Voir les formules
-                  <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" />
+                  {CTA_LABEL}
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
                 </button>
               </Magnetic>
+              <a
+                href="#tarifs"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo("#tarifs");
+                }}
+                className="group flex items-center gap-2 px-2 py-4 font-mono text-xs uppercase tracking-[0.18em] text-milk underline-offset-4 hover:underline"
+              >
+                Voir les tarifs
+                <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" aria-hidden="true" />
+              </a>
             </motion.div>
           </motion.div>
 
@@ -145,13 +145,19 @@ export function Hero({ ready }: { ready: boolean }) {
           >
             <div className="relative overflow-hidden rounded-2xl border border-line bg-coal shadow-[0_30px_80px_rgba(76,29,149,0.14)]">
               <img
-                src="/images/hero-visual.jpg"
-                alt="Sculpture digitale LOLITE"
+                src="/images/hero-visual-800.webp"
+                srcSet="/images/hero-visual-800.webp 800w, /images/hero-visual.webp 1400w"
+                sizes="440px"
+                width={800}
+                height={1000}
+                fetchPriority="high"
+                decoding="async"
+                alt="Ruban de verre violet en mouvement, visuel de l'identité LOLITE"
                 className="aspect-[4/5] w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-milk/80">
-                <span>Création nº 042</span>
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-milk/80">
+                <span>Design LOLITE</span>
                 <span>Sur-mesure</span>
               </div>
             </div>
@@ -163,7 +169,7 @@ export function Hero({ ready }: { ready: boolean }) {
               className="absolute -left-14 top-10 rounded-xl border border-line bg-coal/95 px-5 py-4 shadow-[0_16px_50px_rgba(76,29,149,0.12)] backdrop-blur-md"
             >
               <p className="font-display text-2xl font-bold text-lime">1–2 sem.</p>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
+              <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
                 Livraison express
               </p>
             </motion.div>
@@ -178,7 +184,7 @@ export function Hero({ ready }: { ready: boolean }) {
               className="absolute -right-8 bottom-24 rounded-xl border border-line bg-coal/95 px-5 py-4 shadow-[0_16px_50px_rgba(76,29,149,0.12)] backdrop-blur-md"
             >
               <p className="font-display text-2xl font-bold text-milk">SEO</p>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
+              <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
                 Local inclus
               </p>
             </motion.div>
@@ -206,7 +212,7 @@ export function Hero({ ready }: { ready: boolean }) {
                 {s.value}
                 <span className="text-lime">{s.unit}</span>
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-fog md:text-[11px]">
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-fog md:text-[11px]">
                 {s.label}
               </p>
             </motion.div>

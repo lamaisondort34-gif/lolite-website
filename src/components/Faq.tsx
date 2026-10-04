@@ -4,7 +4,6 @@ import { ArrowUpRight, MessageCircle, Plus } from "lucide-react";
 import { EASE, WA } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
-import { Magnetic } from "./Magnetic";
 
 const FAQS = [
   {
@@ -110,18 +109,16 @@ export function Faq() {
             Vous ne trouvez pas la réponse à votre question ? Écrivez-nous
             directement, on répond sous 24–48h.
           </p>
-          <Magnetic strength={0.25}>
-            <a
-              href={WA.faq}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-3 rounded-full bg-lime px-8 py-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-lime-deep"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Poser ma question sur WhatsApp
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </a>
-          </Magnetic>
+          <a
+            href={WA.faq}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-lime-deep underline-offset-4 hover:underline"
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+            Poser ma question sur WhatsApp
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </a>
         </div>
       </Reveal>
     </section>

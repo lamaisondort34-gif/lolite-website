@@ -25,6 +25,47 @@ export function scrollTo(target: string) {
   }
 }
 
+/* ---------- Site ---------- */
+
+export const SITE_URL = "https://lolite-agency.fr";
+export const CONTACT_EMAIL = "contact@lolite-agency.fr";
+export const INSTAGRAM_HANDLE = "lolite_agency";
+export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
+
+/**
+ * Informations légales (mentions légales, CGU, confidentialité).
+ * ⚠️ À COMPLÉTER avec les vraies informations avant la mise en ligne :
+ * ce sont des mentions obligatoires (art. 6 LCEN).
+ */
+export const LEGAL = {
+  owner: "[Nom Prénom du/de la responsable]",
+  status: "Entrepreneur individuel (micro-entreprise)",
+  siret: "[SIRET à compléter]",
+  address: "[Adresse postale à compléter], Montpellier (34), France",
+  vat: "TVA non applicable, art. 293 B du CGI",
+  updated: "4 octobre 2026",
+};
+
+/** L'unique call-to-action du site : partout le même libellé, partout la même destination. */
+export const CTA_LABEL = "Demander mon devis gratuit";
+
+export type BriefPreset = { type?: string; budget?: string };
+
+/**
+ * Amène l'utilisateur au formulaire de brief (#brief).
+ * Depuis une autre page, on repasse par l'accueil.
+ */
+export function goToBrief(preset?: BriefPreset) {
+  if (window.location.pathname !== "/") {
+    window.location.href = "/#brief";
+    return;
+  }
+  if (preset) {
+    window.dispatchEvent(new CustomEvent<BriefPreset>("lolite:brief", { detail: preset }));
+  }
+  scrollTo("#brief");
+}
+
 /* ---------- WhatsApp ---------- */
 
 export const WA_NUMBER = "33663530157";

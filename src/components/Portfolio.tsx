@@ -7,7 +7,7 @@ import {
   Quote,
   Star,
 } from "lucide-react";
-import { EASE_OUT, WA } from "../lib/site";
+import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { Magnetic } from "./Magnetic";
@@ -63,7 +63,7 @@ export function Portfolio() {
                   <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
                 </span>
-                <span className="mx-auto flex items-center gap-2 rounded-full border border-line bg-coal px-4 py-1.5 font-mono text-[10px] tracking-[0.08em] text-fog">
+                <span className="mx-auto flex items-center gap-2 rounded-full border border-line bg-coal px-4 py-1.5 font-mono text-[11px] tracking-[0.08em] text-fog">
                   <Lock className="h-3 w-3 text-lime" />
                   toutneuf34.com
                 </span>
@@ -71,10 +71,15 @@ export function Portfolio() {
               </div>
               <div className="group overflow-hidden">
                 <img
-                  src="/images/work-toutneuf-2.jpg"
-                  alt="Toutneuf34 — nettoyage écologique de canapé à domicile"
+                  src="/images/work-toutneuf-desktop-800.webp"
+                  srcSet="/images/work-toutneuf-desktop-800.webp 800w, /images/work-toutneuf-desktop.webp 1400w"
+                  sizes="(min-width: 1024px) 55vw, 100vw"
+                  width={1400}
+                  height={788}
+                  alt="Page d'accueil du site Toutneuf34 sur ordinateur : « Un intérieur comme neuf, ça change tout », nettoyage professionnel à Montpellier"
                   loading="lazy"
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
+                  decoding="async"
+                  className="aspect-video w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
                 />
               </div>
             </div>
@@ -83,13 +88,16 @@ export function Portfolio() {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-10 -right-4 w-[42%] overflow-hidden rounded-xl border-4 border-coal shadow-[0_24px_60px_rgba(76,29,149,0.18)] md:-right-10"
+              className="absolute -bottom-12 right-2 w-[28%] max-w-[190px] overflow-hidden rounded-[1.4rem] border-[5px] border-milk bg-milk shadow-[0_24px_60px_rgba(76,29,149,0.25)] md:-right-8"
             >
               <img
-                src="/images/work-toutneuf-1.jpg"
-                alt="Toutneuf34 — nettoyage intérieur véhicule à la vapeur"
+                src="/images/work-toutneuf-mobile.webp"
+                width={390}
+                height={690}
+                alt="Le même site Toutneuf34 affiché sur smartphone, version responsive"
                 loading="lazy"
-                className="aspect-[4/3] w-full object-cover"
+                decoding="async"
+                className="aspect-[390/690] w-full rounded-[1rem] object-cover object-top"
               />
             </motion.div>
 
@@ -100,7 +108,7 @@ export function Portfolio() {
               className="absolute -left-3 top-16 rounded-xl border border-line bg-coal/95 px-4 py-3 shadow-[0_16px_50px_rgba(76,29,149,0.12)] backdrop-blur-md md:-left-8"
             >
               <p className="font-display text-lg font-extrabold text-lime">2026</p>
-              <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-fog">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-fog">
                 Étude de cas
               </p>
             </motion.div>
@@ -134,7 +142,7 @@ export function Portfolio() {
                 {TAGS.map((t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-line bg-ink px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-milk/80 transition-colors duration-300 hover:border-lime/50"
+                    className="rounded-full border border-line bg-ink px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-milk/80 transition-colors duration-300 hover:border-lime/50"
                   >
                     {t}
                   </span>
@@ -142,14 +150,14 @@ export function Portfolio() {
               </div>
             </Reveal>
             <Reveal delay={0.26}>
-              <div className="mt-9 grid grid-cols-3 gap-6 border-y border-line py-7">
+              <div className="mt-9 grid grid-cols-3 gap-4 border-y border-line py-7 sm:gap-6">
                 {STATS.map((s) => (
                   <div key={s.label}>
-                    <p className="font-display text-3xl font-extrabold text-milk md:text-4xl">
+                    <p className="font-display text-2xl font-extrabold text-milk sm:text-3xl md:text-4xl">
                       {s.value}
                       <span className="text-lime">{s.unit}</span>
                     </p>
-                    <p className="mt-1.5 font-mono text-[9px] uppercase leading-relaxed tracking-[0.16em] text-fog md:text-[10px]">
+                    <p className="mt-1.5 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-fog md:text-[11px]">
                       {s.label}
                     </p>
                   </div>
@@ -163,21 +171,20 @@ export function Portfolio() {
                     href="https://toutneuf34.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-2.5 rounded-full bg-milk px-7 py-4 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-white transition-colors duration-300 hover:bg-lime"
+                    className="group flex items-center gap-2.5 rounded-full border border-milk px-7 py-4 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-milk transition-colors duration-300 hover:bg-milk hover:text-white"
                   >
                     Visiter toutneuf34.com
                     <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </a>
                 </Magnetic>
-                <a
-                  href={WA.portfolio}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-lime"
+                <button
+                  type="button"
+                  onClick={() => goToBrief()}
+                  className="group flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-lime-deep"
                 >
-                  Je veux le mien
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </a>
+                  {CTA_LABEL}
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+                </button>
               </div>
             </Reveal>
           </div>
@@ -197,7 +204,7 @@ export function Portfolio() {
                     <Star key={i} className="h-5 w-5 fill-lime text-lime" />
                   ))}
                 </div>
-                <span className="flex items-center gap-2 rounded-full border border-line bg-coal px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-fog">
+                <span className="flex items-center gap-2 rounded-full border border-line bg-coal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-fog">
                   <BadgeCheck className="h-3.5 w-3.5 text-lime" />
                   Avis client vérifié
                 </span>
@@ -212,14 +219,14 @@ export function Portfolio() {
               </blockquote>
 
               <figcaption className="mt-9 flex items-center gap-4">
-                <span className="grid h-14 w-14 place-items-center overflow-hidden rounded-full bg-lime font-display text-lg font-extrabold text-white">
+                <span className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full bg-lime font-display text-base font-extrabold text-white">
                   T34
                 </span>
                 <div>
                   <p className="font-display text-lg font-bold text-milk">
                     Le gérant — Toutneuf34
                   </p>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-fog">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-fog">
                     Nettoyage écologique · Montpellier
                   </p>
                 </div>

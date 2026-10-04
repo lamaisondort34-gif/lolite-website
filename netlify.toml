@@ -1,66 +1,127 @@
-# Configuration Netlify pour LOLITE
-# Docs: https://docs.netlify.com/configure-builds/file-based-configuration
+# Configuration Netlify — LOLITE
+# Docs : https://docs.netlify.com/configure-builds/file-based-configuration
 
 [build]
-# Commande de build
 command = "npm run build"
-# Dossier à publier
 publish = "dist"
 
 [build.environment]
-# Variables d'environnement
 NODE_VERSION = "22"
+# VITE_GA_ID (Google Analytics 4) se définit dans l'interface Netlify, pas ici.
 
-# Redirects pour SPA React
+# ---------------------------------------------------------------------------
+# HTTPS forcé + domaine unique (sans www)
+# Netlify redirige déjà http → https dès que le certificat Let's Encrypt est
+# actif ; ces règles garantissent en plus une seule URL canonique.
+# ---------------------------------------------------------------------------
 [[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
+from = "http://lolite-agency.fr/*"
+to = "https://lolite-agency.fr/:splat"
+status = 301
+force = true
 
-# Headers de sécurité et de cache
+[[redirects]]
+from = "http://www.lolite-agency.fr/*"
+to = "https://lolite-agency.fr/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "https://www.lolite-agency.fr/*"
+to = "https://lolite-agency.fr/:splat"
+status = 301
+force = true
+
+# ---------------------------------------------------------------------------
+# Anciennes URLs → nouvelles (évite les liens cassés déjà partagés)
+# ---------------------------------------------------------------------------
+[[redirects]]
+from = "/"
+to = "/confidentialite"
+status = 301
+force = true
+query = { page = "privacy" }
+
+[[redirects]]
+from = "/"
+to = "/cgu"
+status = 301
+force = true
+query = { page = "terms" }
+
+[[redirects]]
+from = "/"
+to = "/cookies"
+status = 301
+force = true
+query = { page = "cookies" }
+
+[[redirects]]
+from = "/"
+to = "/remboursement"
+status = 301
+force = true
+query = { page = "refund" }
+
+# Variantes courantes tapées à la main
+[[redirects]]
+from = "/mentions"
+to = "/mentions-legales"
+status = 301
+
+[[redirects]]
+from = "/politique-de-confidentialite"
+to = "/confidentialite"
+status = 301
+
+[[redirects]]
+from = "/conditions-generales"
+to = "/cgu"
+status = 301
+
+[[redirects]]
+from = "/contact"
+to = "/#brief"
+status = 301
+
+[[redirects]]
+from = "/devis"
+to = "/#brief"
+status = 301
+
+# Pas de règle « /* → /index.html 200 » : les URLs inconnues reçoivent
+# 404.html avec un vrai code HTTP 404 (meilleur pour le SEO).
+
+# ---------------------------------------------------------------------------
+# En-têtes de sécurité
+# ---------------------------------------------------------------------------
 [[headers]]
 for = "/*"
 [headers.values]
+Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 X-Frame-Options = "DENY"
 X-Content-Type-Options = "nosniff"
-X-XSS-Protection = "1; mode=block"
 Referrer-Policy = "strict-origin-when-cross-origin"
-Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
+Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
 
-# Cache pour les assets (fonts, images, js)
+# ---------------------------------------------------------------------------
+# Cache
+# ---------------------------------------------------------------------------
+# Fichiers JS/CSS versionnés par Vite (hash dans le nom) : cache 1 an
 [[headers]]
 for = "/assets/*"
 [headers.values]
 Cache-Control = "public, max-age=31536000, immutable"
 
-# Cache pour les fichiers CSS et JS
+# Images : 30 jours
 [[headers]]
-for = "*.css"
+for = "/images/*"
 [headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-Content-Type = "text/css"
+Cache-Control = "public, max-age=2592000"
 
-[[headers]]
-for = "*.js"
-[headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-Content-Type = "application/javascript"
-
-# Pas de cache pour le HTML
+# HTML : toujours revalidé pour que les mises à jour soient visibles tout de suite
 [[headers]]
 for = "/*.html"
 [headers.values]
-Cache-Control = "public, max-age=3600, must-revalidate"
-
-# Compression GZIP (automatique sur Netlify)
-[context.production]
-command = "npm run build"
-publish = "dist"
-
-[context.deploy-preview]
-command = "npm run build"
-publish = "dist"
-
-[context.branch-deploy]
-command = "npm run build"
-publish = "dist"
+Cache-Control = "public, max-age=0, must-revalidate"

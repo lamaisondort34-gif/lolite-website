@@ -9,7 +9,7 @@ import {
   PenTool,
   Wrench,
 } from "lucide-react";
-import { EASE, scrollTo, WA } from "../lib/site";
+import { CTA_LABEL, EASE, goToBrief, scrollTo } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
@@ -151,15 +151,14 @@ export function Services() {
           Un besoin spécifique ? Parlons-en.
         </p>
         <div className="flex flex-wrap gap-4">
-          <a
-            href={WA.projet}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-lime"
+          <button
+            type="button"
+            onClick={() => goToBrief()}
+            className="group flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-lime-deep"
           >
-            Discuter de mon projet
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-          </a>
+            {CTA_LABEL}
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+          </button>
           <button
             onClick={() => scrollTo("#tarifs")}
             className="group flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-milk"
