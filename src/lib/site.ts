@@ -33,14 +33,14 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 /**
  * Informations légales (mentions légales, CGU, confidentialité).
- * ⚠️ À COMPLÉTER avec les vraies informations avant la mise en ligne :
- * ce sont des mentions obligatoires (art. 6 LCEN).
+ * Mentions obligatoires (art. 6 LCEN).
+ * ⚠️ Remplacer `siret` dès réception du numéro (déclaration de micro-entreprise en cours).
  */
 export const LEGAL = {
-  owner: "[Nom Prénom du/de la responsable]",
+  owner: "Ikrame Rachidi",
   status: "Entrepreneur individuel (micro-entreprise)",
-  siret: "[SIRET à compléter]",
-  address: "[Adresse postale à compléter], Montpellier (34), France",
+  siret: "en cours d'attribution (immatriculation en cours)",
+  address: "164 rue des Eucalyptus, Montpellier (34), France",
   vat: "TVA non applicable, art. 293 B du CGI",
   updated: "4 octobre 2026",
 };
