@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* white & violet system */
+  --color-ink: #fafafd; /* page background — soft violet-white */
+  --color-coal: #ffffff; /* surfaces */
+  --color-carbon: #f1edf9; /* light violet surface */
+  --color-line: rgba(22, 16, 43, 0.1);
+  --color-lime: #7c3aed; /* violet accent */
+  --color-lime-deep: #6d28d9;
+  --color-fog: #6f6a80; /* muted gray-violet */
+  --color-milk: #16102b; /* main text — deep violet-black */
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-marquee-slow: marquee 55s linear infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+  --animate-pulse-dot: pulse-dot 2.2s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(0.72);
+    }
+  }
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-milk);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-lime);
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: #d9d2ec;
+  border-radius: 99px;
+  border: 2px solid var(--color-ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lime);
+}
+
+/* ---- custom cursor ---- */
+@media (hover: hover) and (pointer: fine) {
+  .cursor-native-off,
+  .cursor-native-off a,
+  .cursor-native-off button,
+  .cursor-native-off [role="button"],
+  .cursor-native-off input,
+  .cursor-native-off textarea,
+  .cursor-native-off select,
+  .cursor-native-off label {
+    cursor: none;
+  }
+}
+
+/* ---- utilities ---- */
+.text-stroke {
+  -webkit-text-stroke: 1.5px rgba(22, 16, 43, 0.45);
+  color: transparent;
+}
+.text-stroke-lime {
+  -webkit-text-stroke: 1.5px rgba(124, 58, 237, 0.75);
+  color: transparent;
+}
+.text-stroke-thin {
+  -webkit-text-stroke: 1px rgba(22, 16, 43, 0.18);
+  color: transparent;
+}
+
+.serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.noise::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 200;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -8%);
+  }
+  30% {
+    transform: translate(3%, -12%);
+  }
+  50% {
+    transform: translate(9%, 4%);
+  }
+  70% {
+    transform: translate(-7%, 6%);
+  }
+  90% {
+    transform: translate(4%, 10%);
+  }
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(22, 16, 43, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 16, 43, 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.mask-fade-y {
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+}
+
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+input,
+textarea,
+select {
+  outline: none;
+}
