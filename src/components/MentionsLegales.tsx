@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, LEGAL, SITE_URL, WA_DISPLAY } from "../lib/site";
+import { LEGAL, PHONE_LINK, SITE_URL, WA_DISPLAY } from "../lib/site";
 import { LegalLayout } from "./LegalLayout";
 
 export function MentionsLegales() {
@@ -18,8 +18,7 @@ export function MentionsLegales() {
         <li>SIRET : {LEGAL.siret}</li>
         <li>Adresse : {LEGAL.address}</li>
         <li>{LEGAL.vat}</li>
-        <li>E-mail : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
-        <li>Téléphone / WhatsApp : {WA_DISPLAY}</li>
+        <li>Téléphone / WhatsApp : <a href={PHONE_LINK}>{WA_DISPLAY}</a></li>
       </ul>
 
       <h2>2. Directeur de la publication</h2>
@@ -52,7 +51,7 @@ export function MentionsLegales() {
         Conformément à l'article L.612-1 du Code de la consommation, le client
         consommateur peut recourir gratuitement à un médiateur de la consommation
         en vue de la résolution amiable d'un litige. Coordonnées du médiateur :
-        communiquées sur simple demande à {CONTACT_EMAIL}.
+        communiquées sur simple demande au {WA_DISPLAY}.
       </p>
     </LegalLayout>
   );

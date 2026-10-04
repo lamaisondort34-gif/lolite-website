@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, SITE_URL } from "../lib/site";
+import { SITE_URL, WA_DISPLAY } from "../lib/site";
 import { LegalLayout } from "./LegalLayout";
 
 export function TermsOfService() {
@@ -71,7 +71,7 @@ export function TermsOfService() {
       <h2>9. Droit applicable et litiges</h2>
       <p>
         Les CGU sont soumises au droit français. En cas de litige, une solution
-        amiable sera recherchée en priorité ({CONTACT_EMAIL}). À défaut, les
+        amiable sera recherchée en priorité (téléphone / WhatsApp : {WA_DISPLAY}). À défaut, les
         tribunaux compétents seront ceux du ressort de Montpellier, sous réserve
         des règles protectrices applicables aux consommateurs.
       </p>

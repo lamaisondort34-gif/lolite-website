@@ -28,7 +28,6 @@ export function scrollTo(target: string) {
 /* ---------- Site ---------- */
 
 export const SITE_URL = "https://lolite-agency.fr";
-export const CONTACT_EMAIL = "contact@lolite-agency.fr";
 export const INSTAGRAM_HANDLE = "lolite_agency";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
@@ -70,6 +69,8 @@ export function goToBrief(preset?: BriefPreset) {
 
 export const WA_NUMBER = "33663530157";
 export const WA_DISPLAY = "+33 6 63 53 01 57";
+/** Contact principal (pas d'adresse e-mail pour l'instant). */
+export const PHONE_LINK = `tel:+${WA_NUMBER}`;
 
 export function waLink(message: string) {
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;

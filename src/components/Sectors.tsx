@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Globe2, Mail, Phone, Video } from "lucide-react";
+import { ArrowUpRight, Globe2, MessageCircle, Phone, Video } from "lucide-react";
 import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
@@ -103,7 +103,7 @@ export function Sectors() {
               <span className="serif-accent text-lime">où que vous soyez</span>
             </h3>
             <p className="mt-4 text-sm leading-relaxed text-fog md:text-base">
-              Grâce à une organisation 100% optimisée — visio, WhatsApp, e-mail —
+              Grâce à une organisation 100% optimisée — visio, WhatsApp, téléphone —
               nous réalisons votre site où que vous soyez en France
               métropolitaine et dans les DOM-TOM, sans jamais perdre en
               proximité.
@@ -111,8 +111,8 @@ export function Sectors() {
             <div className="mt-6 flex flex-wrap gap-2.5">
               {[
                 { icon: Video, label: "Visio" },
-                { icon: Phone, label: "WhatsApp" },
-                { icon: Mail, label: "E-mail" },
+                { icon: MessageCircle, label: "WhatsApp" },
+                { icon: Phone, label: "Téléphone" },
               ].map((c) => (
                 <span
                   key={c.label}

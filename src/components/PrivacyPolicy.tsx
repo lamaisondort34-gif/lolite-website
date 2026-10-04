@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, LEGAL } from "../lib/site";
+import { LEGAL, PHONE_LINK, WA_DISPLAY } from "../lib/site";
 import { LegalLayout } from "./LegalLayout";
 
 export function PrivacyPolicy() {
@@ -14,8 +14,8 @@ export function PrivacyPolicy() {
 
       <h2>1. Responsable du traitement</h2>
       <p>
-        LOLITE — {LEGAL.owner}, {LEGAL.address}. Contact :{" "}
-        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        LOLITE — {LEGAL.owner}, {LEGAL.address}. Contact (téléphone / WhatsApp) :{" "}
+        <a href={PHONE_LINK}>{WA_DISPLAY}</a>.
       </p>
 
       <h2>2. Données collectées et finalités</h2>
@@ -34,7 +34,7 @@ export function PrivacyPolicy() {
             <td>Mesures précontractuelles (art. 6.1.b RGPD)</td>
           </tr>
           <tr>
-            <td>Échanges WhatsApp ou e-mail</td>
+            <td>Échanges par WhatsApp ou par téléphone</td>
             <td>Suivi de votre demande et de votre projet</td>
             <td>Mesures précontractuelles / contrat</td>
           </tr>
@@ -82,7 +82,8 @@ export function PrivacyPolicy() {
         directives sur le sort de vos données après votre décès.
       </p>
       <p>
-        Pour les exercer, écrivez à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        Pour les exercer, contactez-nous par téléphone ou WhatsApp au <a href={PHONE_LINK}>{WA_DISPLAY}</a>,
+        ou par courrier à l'adresse ci-dessus.
         Nous répondons sous un mois. Si vous estimez que vos droits ne sont pas
         respectés, vous pouvez saisir la CNIL (
         <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener noreferrer">cnil.fr/plaintes</a>).

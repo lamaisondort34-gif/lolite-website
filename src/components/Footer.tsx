@@ -1,12 +1,12 @@
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import {
-  CONTACT_EMAIL,
   CTA_LABEL,
   EASE_OUT,
   goToBrief,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
+  PHONE_LINK,
   scrollTo,
   WA,
   WA_DISPLAY,
@@ -121,10 +121,10 @@ export function Footer() {
             </a>
             <p className="mt-3 text-sm text-fog">Réponse sous 24–48h, 7j/7.</p>
             <a
-              href={`mailto:${CONTACT_EMAIL}`}
+              href={PHONE_LINK}
               className="mt-3 block text-sm text-milk/80 underline-offset-4 hover:text-lime-deep hover:underline"
             >
-              {CONTACT_EMAIL}
+              Appeler le {WA_DISPLAY}
             </a>
             <a
               href={INSTAGRAM_URL}

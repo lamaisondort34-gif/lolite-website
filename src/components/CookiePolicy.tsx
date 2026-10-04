@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL } from "../lib/site";
+import { PHONE_LINK, WA_DISPLAY } from "../lib/site";
 import { ANALYTICS_ENABLED, openCookieSettings } from "../lib/analytics";
 import { LegalLayout } from "./LegalLayout";
 
@@ -67,7 +67,7 @@ export function CookiePolicy() {
 
       <h2>4. Contact</h2>
       <p>
-        Une question ? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Voir
+        Une question ? Téléphone / WhatsApp : <a href={PHONE_LINK}>{WA_DISPLAY}</a>. Voir
         aussi notre <a href="/confidentialite">politique de confidentialité</a>.
       </p>
     </LegalLayout>

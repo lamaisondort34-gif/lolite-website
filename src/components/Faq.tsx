@@ -20,7 +20,7 @@ const FAQS = [
   },
   {
     q: "Travaillez-vous avec des clients hors de Montpellier ?",
-    a: "Oui ! Nous accompagnons des clients partout en France métropolitaine et dans les DOM-TOM. Tout se fait à distance : visio, WhatsApp, e-mail — avec la même exigence de qualité.",
+    a: "Oui ! Nous accompagnons des clients partout en France métropolitaine et dans les DOM-TOM. Tout se fait à distance : visio, WhatsApp, téléphone — avec la même exigence de qualité.",
   },
   {
     q: "Mon site sera-t-il visible sur Google ?",

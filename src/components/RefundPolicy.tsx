@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, WA_DISPLAY } from "../lib/site";
+import { PHONE_LINK, WA_DISPLAY } from "../lib/site";
 import { LegalLayout } from "./LegalLayout";
 
 export function RefundPolicy() {
@@ -8,7 +8,7 @@ export function RefundPolicy() {
       <p>
         Si vous annulez une commande <strong>avant le démarrage du projet</strong>,
         l'acompte versé vous est remboursé à 100 % sous <strong>14 jours</strong>.
-        La demande se fait par écrit à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        La demande se fait par écrit, par message WhatsApp au <a href={PHONE_LINK}>{WA_DISPLAY}</a>.
       </p>
 
       <h2>2. Après le début du projet</h2>
@@ -41,7 +41,7 @@ export function RefundPolicy() {
 
       <h2>6. Contact</h2>
       <p>
-        E-mail : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> — WhatsApp : {WA_DISPLAY}
+        Téléphone / WhatsApp : <a href={PHONE_LINK}>{WA_DISPLAY}</a>
       </p>
     </LegalLayout>
   );

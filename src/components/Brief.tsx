@@ -159,7 +159,7 @@ export function Brief() {
               <span className="serif-accent text-lime">en 2 minutes</span>
             </>
           }
-          description="Répondez à ces quelques questions et recevez un devis gratuit et précis sous 24 à 48h, directement sur WhatsApp ou par e-mail."
+          description="Répondez à ces quelques questions et recevez un devis gratuit et précis sous 24 à 48h, directement sur WhatsApp ou par téléphone."
         />
 
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
