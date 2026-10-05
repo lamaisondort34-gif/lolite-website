@@ -34,3 +34,6 @@ Thumbs.db
 
 # Captures d’aperçu locales (non versionnées)
 apercu/
+
+# Film motion : rendus et aperçus (lourds, régénérables)
+motion/out/
