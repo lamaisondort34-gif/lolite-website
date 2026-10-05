@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), "out");
 fs.mkdirSync(OUT, { recursive: true });
@@ -557,6 +558,81 @@ function freeverb(input) {
 }
 const rev = freeverb(VERB);
 
+/* =========================================================
+   VOIX OFF (motion/voice/generate_vo.py → out/vo/)
+   ========================================================= */
+function readWavMono(file) {
+  const b = fs.readFileSync(file);
+  let p = 12, fmt = null, data = null;
+  while (p < b.length - 8) {
+    const id = b.toString("ascii", p, p + 4), size = b.readUInt32LE(p + 4);
+    if (id === "fmt ") fmt = { format: b.readUInt16LE(p + 8), ch: b.readUInt16LE(p + 10), bits: b.readUInt16LE(p + 22) };
+    if (id === "data") { data = b.subarray(p + 8, p + 8 + size); break; }
+    p += 8 + size + (size % 2);
+  }
+  if (!fmt || ![3, 0xfffe].includes(fmt.format) || fmt.bits !== 32 || fmt.ch !== 1) throw new Error(`WAV attendu float32 mono : ${file}`);
+  const out = new Float32Array(data.length / 4);
+  for (let i = 0; i < out.length; i++) out[i] = data.readFloatLE(i * 4);
+  return out;
+}
+const VO = mk();
+const VO_VERB = new Float32Array(N);
+const voMask = new Float32Array(N);
+const VO_DIR = path.join(OUT, "vo");
+const VO_MANIFEST = path.join(VO_DIR, "manifest.json");
+const WITH_VO = fs.existsSync(VO_MANIFEST) && !process.env.NO_VO;
+if (WITH_VO) {
+  const EQ = "highpass=f=90,equalizer=f=220:t=q:w=1.2:g=-2,equalizer=f=3000:t=q:w=1:g=3,equalizer=f=7000:t=h:w=0.7:g=2,"
+    + "acompressor=threshold=0.08:ratio=3.5:attack=3:release=70:makeup=2.5,deesser=i=0.35";
+  const CHAIN = {
+    normal: `${EQ},aresample=48000`,
+    echo: `${EQ},aresample=48000`,
+    intime: `equalizer=f=160:t=q:w=1:g=1.5,${EQ},lowpass=f=7000,aresample=48000`, // plus chaude, plus proche
+  };
+  const SEND = { normal: 0.1, echo: 0.16, intime: 0.32 };
+  const man = JSON.parse(fs.readFileSync(VO_MANIFEST, "utf8"));
+  for (const c of man.clips) {
+    const tmp = path.join(VO_DIR, `${c.id}.48k.wav`);
+    execFileSync("ffmpeg", ["-v", "error", "-y", "-i", path.join(VO_DIR, `${c.id}.wav`), "-af", CHAIN[c.style], "-ac", "1", "-c:a", "pcm_f32le", tmp]);
+    const x = readWavMono(tmp);
+    // niveau constant d'une réplique à l'autre (RMS des parties parlées)
+    let ss = 0, n = 0, pk = 0;
+    for (const v of x) pk = Math.max(pk, Math.abs(v));
+    for (const v of x) if (Math.abs(v) > pk * 0.05) { ss += v * v; n++; }
+    const g = (10 ** (-7 / 20)) / Math.sqrt(ss / Math.max(1, n)) * (c.style === "intime" ? 0.92 : 1);
+    for (let i = 0; i < x.length; i++) x[i] *= g;
+    const s0 = sec(c.at);
+    for (let i = 0; i < x.length && s0 + i < N; i++) {
+      VO[0][s0 + i] += x[i]; VO[1][s0 + i] += x[i];
+      VO_VERB[s0 + i] += x[i] * SEND[c.style];
+    }
+    for (let i = sec(c.at - 0.06); i < sec(c.at + c.dur + 0.1) && i < N; i++) if (i >= 0) voMask[i] = 1;
+    // « écho » : renvois de la fin de phrase en croches (0,25 s), filtrés et panoramiqués
+    if (c.style === "echo") {
+      const tail = sec(0.55), from = Math.max(0, x.length - tail);
+      [[0.25, 0.3, -0.55], [0.5, 0.17, 0.55], [0.75, 0.09, -0.3]].forEach(([d, gg, pan]) => {
+        const hp = new Biquad().set("hp", 500, 0.7), lp = new Biquad().set("lp", 3600, 0.7);
+        const a = ((pan + 1) * Math.PI) / 4, gl = gg * Math.cos(a) * 1.414, gr = gg * Math.sin(a) * 1.414;
+        for (let i = from; i < x.length; i++) {
+          const w = Math.min(1, (i - from) / sec(0.15));
+          const v = lp.p(hp.p(x[i] * w));
+          const j = s0 + i + sec(d);
+          if (j < N) { VO[0][j] += v * gl; VO[1][j] += v * gr; VO_VERB[j] += v * gg * 0.5; }
+        }
+      });
+    }
+  }
+}
+const voRev = WITH_VO ? freeverb(VO_VERB) : null;
+// enveloppe de présence voix → la musique s'efface sous la voix
+const voEnv = new Float32Array(N);
+{
+  const aA = 1 - Math.exp(-1 / (SR * 0.045)), aR = 1 - Math.exp(-1 / (SR * 0.32));
+  let e = 0;
+  for (let i = 0; i < N; i++) { const m = voMask[i]; e += (m - e) * (m > e ? aA : aR); voEnv[i] = e; }
+}
+const DUCK = { music: 0.78, drums: 0.72, sfx: 0.6, verb: 0.6 }; // profondeur (0,78 ≈ -13 dB)
+
 const gains = { music: 1.1, drums: 0.72, sfx: 0.95 };
 if (process.env.STATS) {
   const st = (arr) => { let pk = 0, ss = 0; for (let i = 0; i < N; i++) { pk = Math.max(pk, Math.abs(arr[i])); ss += arr[i] * arr[i]; } return [pk.toFixed(2), (20 * Math.log10(Math.sqrt(ss / N) + 1e-9)).toFixed(1)]; };
@@ -568,14 +644,23 @@ if (process.env.STATS) {
   }
 }
 const ML = new Float32Array(N), MR = new Float32Array(N);
-for (let i = 0; i < N; i++) {
-  ML[i] = BUS.music[0][i] * gains.music + BUS.drums[0][i] * gains.drums + BUS.sfx[0][i] * gains.sfx + rev[0][i] * 4.0;
-  MR[i] = BUS.music[1][i] * gains.music + BUS.drums[1][i] * gains.drums + BUS.sfx[1][i] * gains.sfx + rev[1][i] * 4.0;
-}
-// fondu de fin + limiteur à anticipation
+// fondu de fin (lit musical uniquement) + voix par-dessus
 const fadeOut = (t) => (t > 44.2 ? Math.cos((Math.PI / 2) * prog(t, 44.2, 45)) ** 1.3 : 1);
 let peak = 0;
-for (let i = 0; i < N; i++) { const f = fadeOut(i / SR) * 0.5; ML[i] *= f; MR[i] *= f; peak = Math.max(peak, Math.abs(ML[i]), Math.abs(MR[i])); }
+for (let i = 0; i < N; i++) {
+  const e = voEnv[i], f = fadeOut(i / SR);
+  const gm = gains.music * (1 - DUCK.music * e), gd = gains.drums * (1 - DUCK.drums * e), gs = gains.sfx * (1 - DUCK.sfx * e), gv = 4.0 * (1 - DUCK.verb * e);
+  ML[i] = (BUS.music[0][i] * gm + BUS.drums[0][i] * gd + BUS.sfx[0][i] * gs + rev[0][i] * gv) * f;
+  MR[i] = (BUS.music[1][i] * gm + BUS.drums[1][i] * gd + BUS.sfx[1][i] * gs + rev[1][i] * gv) * f;
+  if (WITH_VO) { ML[i] += VO[0][i] + voRev[0][i] * 3.0; MR[i] += VO[1][i] + voRev[1][i] * 3.0; }
+  ML[i] *= 0.42; MR[i] *= 0.42;
+  peak = Math.max(peak, Math.abs(ML[i]), Math.abs(MR[i]));
+}
+if (process.env.STATS && WITH_VO) {
+  let sv = 0, sb = 0, n = 0;
+  for (let i = 0; i < N; i++) if (voMask[i]) { const v = VO[0][i] * 0.42; sv += v * v; const b = ML[i] - v; sb += b * b; n++; }
+  console.log("voix / lit musical pendant la voix :", (10 * Math.log10(sv / sb)).toFixed(1), "dB");
+}
 const LA = sec(0.004), REL = Math.exp(-1 / (SR * 0.08)), TH = 0.9;
 const target = new Float32Array(N);
 for (let i = 0; i < N; i++) { const a = Math.max(Math.abs(ML[i]), Math.abs(MR[i])); target[i] = a > TH ? TH / a : 1; }
@@ -600,4 +685,4 @@ function writeWav(file, L, R) {
   fs.writeFileSync(file, Buffer.concat([h, data]));
 }
 writeWav(path.join(OUT, "soundtrack-raw.wav"), outL, outR);
-console.log("peak avant limiteur:", peak.toFixed(3), "| kicks:", KICKS.length);
+console.log("peak avant limiteur:", peak.toFixed(3), "| kicks:", KICKS.length, "| voix off:", WITH_VO ? "oui" : "non");

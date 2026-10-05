@@ -37,3 +37,7 @@ apercu/
 
 # Film motion : rendus et aperçus (lourds, régénérables)
 motion/out/
+
+# Voix off : modèles TTS (325 Mo, re-téléchargés automatiquement)
+motion/voice/models/
+.venv/

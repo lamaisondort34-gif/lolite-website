@@ -16,6 +16,19 @@ node motion/snap.mjs --range 6 12 0.25          # planche contact d'un passage �
 
 Prérequis : Node 20+, ffmpeg, Playwright + Chromium (`npm i -D playwright && npx playwright install chromium`).
 
+### Voix off
+
+Voix française neuronale (Kokoro, voix `ff_siwis`, licence Apache 2.0), générée en local :
+
+```bash
+python3 -m venv .venv && . .venv/bin/activate && pip install kokoro-onnx soundfile
+python motion/voice/generate_vo.py   # répliques calées sur les timecodes → motion/out/vo/
+node motion/mux.mjs                  # remixe le son (la musique s'efface sous la voix) sans re-rendre l'image
+```
+
+Le texte est dans `voice/generate_vo.py` (graphies phonétiques : « Gougueul », « Mapse », « lolite point F R » ;
+« Lolite » se prononce « lo-lit »). `NO_VO=1 node motion/mux.mjs --out sans-voix` produit la version sans voix.
+
 ## Structure
 
 | Fichier | Rôle |
@@ -26,6 +39,8 @@ Prérequis : Node 20+, ffmpeg, Playwright + Chromium (`npm i -D playwright && np
 | `timeline.js` | Chapitres, secousses caméra, cadence |
 | `audio.mjs` | Synthèse musique + bruitages → `out/soundtrack-raw.wav` |
 | `render.mjs` | Rendu parallèle, flou de mouvement, normalisation -14 LUFS, encodage H.264 |
+| `voice/generate_vo.py` | Voix off : synthèse, découpage aux silences, ajustement aux fenêtres |
+| `mux.mjs` | Remixage son + voix et assemblage avec la vidéo existante |
 
 ## Découpage
 
