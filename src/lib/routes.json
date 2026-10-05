@@ -7,7 +7,7 @@
   },
   "/mentions-legales": {
     "title": "Mentions légales — LOLITE Studio Web",
-    "description": "Mentions légales du site lolite-agency.fr : éditeur, hébergeur, propriété intellectuelle et contact.",
+    "description": "Mentions légales du site lolite.fr : éditeur, hébergeur, propriété intellectuelle et contact.",
     "priority": "0.3",
     "changefreq": "yearly"
   },
@@ -19,7 +19,7 @@
   },
   "/cgu": {
     "title": "Conditions générales d'utilisation (CGU) — LOLITE Studio Web",
-    "description": "Conditions générales d'utilisation du site lolite-agency.fr : accès, propriété intellectuelle, responsabilité et droit applicable.",
+    "description": "Conditions générales d'utilisation du site lolite.fr : accès, propriété intellectuelle, responsabilité et droit applicable.",
     "priority": "0.3",
     "changefreq": "yearly"
   },

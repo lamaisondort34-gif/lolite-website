@@ -27,7 +27,7 @@ export function scrollTo(target: string) {
 
 /* ---------- Site ---------- */
 
-export const SITE_URL = "https://lolite-agency.fr";
+export const SITE_URL = "https://lolite.fr";
 export const INSTAGRAM_HANDLE = "lolite_agency";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
