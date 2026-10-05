@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lolite-agency.fr/sitemap.xml
+Sitemap: https://lolite.fr/sitemap.xml

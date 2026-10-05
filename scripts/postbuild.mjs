@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
-const SITE = "https://lolite-agency.fr";
+const SITE = "https://lolite.fr";
 const routes = JSON.parse(readFileSync(join(root, "src/lib/routes.json"), "utf8"));
 const template = readFileSync(join(dist, "index.html"), "utf8");
 

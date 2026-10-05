@@ -15,20 +15,20 @@ NODE_VERSION = "22"
 # actif ; ces règles garantissent en plus une seule URL canonique.
 # ---------------------------------------------------------------------------
 [[redirects]]
-from = "http://lolite-agency.fr/*"
-to = "https://lolite-agency.fr/:splat"
+from = "http://lolite.fr/*"
+to = "https://lolite.fr/:splat"
 status = 301
 force = true
 
 [[redirects]]
-from = "http://www.lolite-agency.fr/*"
-to = "https://lolite-agency.fr/:splat"
+from = "http://www.lolite.fr/*"
+to = "https://lolite.fr/:splat"
 status = 301
 force = true
 
 [[redirects]]
-from = "https://www.lolite-agency.fr/*"
-to = "https://lolite-agency.fr/:splat"
+from = "https://www.lolite.fr/*"
+to = "https://lolite.fr/:splat"
 status = 301
 force = true
 
