@@ -16,7 +16,7 @@ import { Reveal } from "./Reveal";
 const SERVICES = [
   {
     icon: Monitor,
-    title: "Site Vitrine Essentiel",
+    title: "Site Vitrine",
     desc: "Présentez votre activité, vos réalisations et vos coordonnées de manière claire, esthétique et parfaitement optimisée pour smartphone.",
     tags: ["Design responsive & sur-mesure", "Formulaire + Google Maps", "Livré en 1 à 2 semaines"],
   },

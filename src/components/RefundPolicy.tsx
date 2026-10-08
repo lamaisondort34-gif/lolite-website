@@ -28,8 +28,8 @@ export function RefundPolicy() {
 
       <h2>4. Révisions incluses</h2>
       <ul>
-        <li><strong>Formule Vitrine :</strong> 3 séries de révisions</li>
-        <li><strong>Formule Complet &amp; Avancé :</strong> 5 séries de révisions</li>
+        <li><strong>Formule Standard :</strong> 3 séries de révisions</li>
+        <li><strong>Formule Premium :</strong> 5 séries de révisions</li>
       </ul>
       <p>Les révisions supplémentaires sont facturées sur devis.</p>
 

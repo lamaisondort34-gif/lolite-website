@@ -27,7 +27,7 @@ type Plan = {
 const PLANS: Plan[] = [
   {
     icon: Zap,
-    name: "Formule Vitrine",
+    name: "Formule Standard",
     tag: "Livraison 1–2 sem.",
     desc: "Parfait pour lancer votre présence en ligne avec professionnalisme.",
     price: "450 €",
@@ -38,6 +38,7 @@ const PLANS: Plan[] = [
       "Présentation activité & services",
       "Formulaire de contact + Google Maps",
       "SEO de base & certificat SSL",
+      "Hébergement offert",
       "Optimisé smartphone & tablette",
       "Devis gratuit, réponse 24–48h",
     ],
@@ -46,14 +47,14 @@ const PLANS: Plan[] = [
   },
   {
     icon: Sparkles,
-    name: "Complet & Avancé",
+    name: "Formule Premium",
     tag: "Livraison 1–2 sem.",
     desc: "Pour les entreprises qui veulent se démarquer et générer des prospects qualifiés.",
     price: "800 €",
     suffix: "",
     prefix: "À partir de",
     features: [
-      "Tout le pack Essentiel inclus",
+      "Tout le pack Standard inclus",
       "Design haut de gamme + animations fluides",
       "Architecture multi-pages complète",
       "Réservation en ligne ou e-commerce",
@@ -215,7 +216,7 @@ export function Pricing() {
                     <p className="mt-7 font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
                       En dehors du forfait
                     </p>
-                    <ul className="mb-9 mt-4 flex flex-col gap-3.5">
+                    <ul className="mt-4 flex flex-col gap-3.5">
                       {p.extras.map((x) => (
                         <li key={x} className="flex items-start gap-3 text-sm">
                           <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-line text-fog">
@@ -228,19 +229,22 @@ export function Pricing() {
                   </>
                 )}
 
-                <button
-                  type="button"
-                  onClick={() => goToBrief(p.preset)}
-                  aria-label={`${CTA_LABEL} — ${p.name}`}
-                  className={`group mt-9 flex items-center justify-center gap-2.5 rounded-full py-4.5 font-mono text-xs font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
-                    featured
-                      ? "bg-white text-lime hover:bg-white/90"
-                      : "border border-line text-milk hover:border-lime hover:bg-lime hover:text-white"
-                  } mt-auto`}
-                >
-                  {CTA_LABEL}
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
-                </button>
+                {/* mt-auto : bouton aligné en bas des cartes ; pt-9 : espace garanti au-dessus (mobile). */}
+                <div className="mt-auto pt-9">
+                  <button
+                    type="button"
+                    onClick={() => goToBrief(p.preset)}
+                    aria-label={`${CTA_LABEL} — ${p.name}`}
+                    className={`group flex w-full items-center justify-center gap-2.5 rounded-full py-4.5 font-mono text-xs font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
+                      featured
+                        ? "bg-white text-lime hover:bg-white/90"
+                        : "border border-line text-milk hover:border-lime hover:bg-lime hover:text-white"
+                    }`}
+                  >
+                    {CTA_LABEL}
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+                  </button>
+                </div>
                 {p.note && (
                   <p className="mt-4 text-xs leading-relaxed text-fog">{p.note}</p>
                 )}

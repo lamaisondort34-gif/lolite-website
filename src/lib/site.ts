@@ -40,7 +40,7 @@ export const LEGAL = {
   owner: "Ikrame Rachidi",
   status: "Entrepreneur individuel (micro-entreprise)",
   siret: "en cours d'attribution (immatriculation en cours)",
-  address: "164 rue des Eucalyptus, Montpellier (34), France",
+  address: "164 rue des Eucalyptus, 34090 Montpellier, France",
   vat: "TVA non applicable, art. 293 B du CGI",
   updated: "4 octobre 2026",
 };
@@ -84,10 +84,10 @@ export const WA = {
     "Bonjour LOLITE 👋, j'aimerais discuter de mon projet de site internet. Quand seriez-vous disponible pour un échange rapide ?"
   ),
   essentiel: waLink(
-    "Bonjour LOLITE 👋, je suis intéressé(e) par la formule Vitrine Essentiel (à partir de 450 €). J'aimerais recevoir un devis gratuit adapté à mon activité."
+    "Bonjour LOLITE 👋, je suis intéressé(e) par la Formule Standard (à partir de 450 €). J'aimerais recevoir un devis gratuit adapté à mon activité."
   ),
   premium: waLink(
-    "Bonjour LOLITE 👋, je suis intéressé(e) par la formule Complet & Avancé (à partir de 800 €). J'aimerais recevoir un devis gratuit personnalisé."
+    "Bonjour LOLITE 👋, je suis intéressé(e) par la Formule Premium (à partir de 800 €). J'aimerais recevoir un devis gratuit personnalisé."
   ),
   maintenance: waLink(
     "Bonjour LOLITE 👋, je suis intéressé(e) par le Forfait Maintenance LOLITE (25 € par mois sans engagement, ou 250 € par an). Pouvez-vous me donner plus de détails ?"
