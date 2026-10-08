@@ -49,7 +49,7 @@ function build(root) {
   root.appendChild(S.swoosh);
   S.swPath = S.swoosh.querySelector("path");
   S.chips = el("div", { class: "abs", style: { left: 0, right: 0, top: "1324px", display: "flex", justifyContent: "center", gap: "20px" } }, root);
-  S.chipEls = [`${icon("check", 30, 'style="stroke-width:3"')} Devis gratuit`, "Maintenance dès 50 €/mois"].map((h) =>
+  S.chipEls = [`${icon("check", 30, 'style="stroke-width:3"')} Devis gratuit`, "Maintenance 25 €/mois"].map((h) =>
     el("div", { class: "chip", style: { background: "rgba(255,255,255,.14)", border: "2px solid rgba(255,255,255,.3)", color: "#fff", fontSize: "30px" }, html: h }, S.chips));
 }
 
