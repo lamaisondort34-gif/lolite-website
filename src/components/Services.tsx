@@ -46,9 +46,9 @@ const SERVICES = [
   },
   {
     icon: Wrench,
-    title: "Maintenance & Support",
-    desc: "Un suivi technique régulier pour que votre site reste toujours fluide, hébergé en sécurité et à jour sans contrainte pour vous.",
-    tags: ["Sauvegardes & sécurité", "Assistance sous 24–48h", "Dès 50 € / mois"],
+    title: "Forfait Maintenance LOLITE",
+    desc: "Votre site reste en ligne, à jour et sécurisé, sans que vous ayez à vous en occuper.",
+    tags: ["Hébergement, sécurité et mises à jour", "1 petite modification par mois", "25 € par mois, sans engagement"],
   },
 ];
 

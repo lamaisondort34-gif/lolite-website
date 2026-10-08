@@ -90,7 +90,7 @@ export const WA = {
     "Bonjour LOLITE 👋, je suis intéressé(e) par la formule Complet & Avancé (à partir de 800 €). J'aimerais recevoir un devis gratuit personnalisé."
   ),
   maintenance: waLink(
-    "Bonjour LOLITE 👋, je suis intéressé(e) par la formule Maintenance Sérénité (à partir de 50 € / mois). Pouvez-vous me donner plus de détails ?"
+    "Bonjour LOLITE 👋, je suis intéressé(e) par le Forfait Maintenance LOLITE (25 € par mois sans engagement, ou 250 € par an). Pouvez-vous me donner plus de détails ?"
   ),
   portfolio: waLink(
     "Bonjour LOLITE 👋, j'ai vu votre réalisation pour Toutneuf34 et j'aimerais un site du même niveau pour mon activité. Pouvez-vous me faire un devis gratuit ?"
