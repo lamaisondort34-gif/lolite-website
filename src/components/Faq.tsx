@@ -28,7 +28,7 @@ const FAQS = [
   },
   {
     q: "Que comprend le Forfait Maintenance LOLITE ?",
-    a: "Pour 25 € par mois sans engagement, ou 250 € par an (soit 2 mois offerts) : l'hébergement de votre site, la sécurité et les mises à jour, 1 petite modification par mois (texte, photo, horaires, coordonnées) et une réponse sous 48 h, par WhatsApp ou par e-mail. En dehors du forfait, une modification supplémentaire coûte 30 € minimum selon la taille du changement ; une nouvelle page, une refonte ou une nouvelle fonctionnalité font l'objet d'un devis sur mesure. Le nom de domaine reste à votre nom : vous l'achetez directement chez l'hébergeur de votre choix, environ 1 € la première année.",
+    a: "Pour 25 € par mois sans engagement, ou 250 € par an (soit 2 mois offerts) : l'hébergement de votre site, la sécurité et les mises à jour, 1 petite modification par mois (texte, photo, horaires, coordonnées) et une réponse sous 48 h, par WhatsApp. En dehors du forfait, une modification supplémentaire coûte 30 € minimum selon la taille du changement ; une nouvelle page, une refonte ou une nouvelle fonctionnalité font l'objet d'un devis sur mesure. Le nom de domaine reste à votre nom : vous l'achetez directement chez l'hébergeur de votre choix, environ 1 € la première année.",
   },
 ];
 

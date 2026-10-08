@@ -76,7 +76,7 @@ const PLANS: Plan[] = [
       "Hébergement de votre site",
       "Sécurité et mises à jour",
       "1 petite modification par mois (texte, photo, horaires, coordonnées)",
-      "Réponse sous 48 h, par WhatsApp ou par e-mail",
+      "Réponse sous 48 h, par WhatsApp",
     ],
     extras: [
       "Modification supplémentaire : 30 € minimum, selon la taille du changement",
