@@ -38,7 +38,7 @@ const PLANS: Plan[] = [
       "Présentation activité & services",
       "Formulaire de contact + Google Maps",
       "SEO de base & certificat SSL",
-      "Hébergement offert",
+      "Hébergement offert pendant un an",
       "Optimisé smartphone & tablette",
       "Devis gratuit, réponse 24–48h",
     ],
