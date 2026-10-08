@@ -38,7 +38,7 @@ const PLANS: Plan[] = [
       "Présentation activité & services",
       "Formulaire de contact + Google Maps",
       "SEO de base & certificat SSL",
-      "Hébergement offert pendant un an, puis 25 € par mois ou 250 € par an avec le Forfait Maintenance",
+      "Hébergement offert pendant un an, puis Forfait Maintenance à 25 € par mois ou 250 € par an : hébergement, sécurité, mises à jour et 1 petite modification par mois inclus",
       "Optimisé smartphone & tablette",
       "Devis gratuit, réponse 24–48h",
     ],
