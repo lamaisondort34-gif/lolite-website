@@ -1,13 +1,33 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Check, ShieldCheck, Sparkles, Zap } from "lucide-react";
-import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
+import type { LucideIcon } from "lucide-react";
+import { ArrowUpRight, Check, Plus, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { CTA_LABEL, EASE_OUT, goToBrief, type BriefPreset } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
-const PLANS = [
+type Plan = {
+  icon: LucideIcon;
+  name: string;
+  tag: string;
+  desc: string;
+  price: string;
+  suffix: string;
+  prefix: string;
+  /** Second tarif affiché sous le prix principal (ex. formule annuelle). */
+  altPrice?: string;
+  features: string[];
+  /** Prestations hors forfait, listées sous « En dehors du forfait ». */
+  extras?: string[];
+  /** Petite note affichée sous l'offre. */
+  note?: string;
+  preset: BriefPreset;
+  featured: boolean;
+};
+
+const PLANS: Plan[] = [
   {
     icon: Zap,
-    name: "Formule Vitrine",
+    name: "Formule Standard",
     tag: "Livraison 1–2 sem.",
     desc: "Parfait pour lancer votre présence en ligne avec professionnalisme.",
     price: "450 €",
@@ -18,6 +38,7 @@ const PLANS = [
       "Présentation activité & services",
       "Formulaire de contact + Google Maps",
       "SEO de base & certificat SSL",
+      "Hébergement offert pendant un an, puis 25 € par mois ou 250 € par an avec le Forfait Maintenance",
       "Optimisé smartphone & tablette",
       "Devis gratuit, réponse 24–48h",
     ],
@@ -26,14 +47,14 @@ const PLANS = [
   },
   {
     icon: Sparkles,
-    name: "Complet & Avancé",
+    name: "Formule Premium",
     tag: "Livraison 1–2 sem.",
     desc: "Pour les entreprises qui veulent se démarquer et générer des prospects qualifiés.",
     price: "800 €",
     suffix: "",
     prefix: "À partir de",
     features: [
-      "Tout le pack Essentiel inclus",
+      "Tout le pack Standard inclus",
       "Design haut de gamme + animations fluides",
       "Architecture multi-pages complète",
       "Réservation en ligne ou e-commerce",
@@ -45,19 +66,24 @@ const PLANS = [
   },
   {
     icon: ShieldCheck,
-    name: "Sérénité Totale",
+    name: "Forfait Maintenance LOLITE",
     tag: "Abonnement",
-    desc: "La tranquillité d'esprit pour garder votre site performant au quotidien.",
-    price: "50 €",
-    suffix: " / mois",
-    prefix: "À partir de",
+    desc: "Votre site reste en ligne, à jour et sécurisé, sans que vous ayez à vous en occuper.",
+    price: "25 €",
+    suffix: " par mois",
+    prefix: "Sans engagement",
+    altPrice: "ou 250 € par an (soit 2 mois offerts)",
     features: [
-      "Hébergement haute vitesse sécurisé",
-      "Sauvegardes automatiques hebdo",
-      "Mises à jour de sécurité régulières",
-      "Petites modifs de contenu incluses",
-      "Support prioritaire sous 24h",
+      "Hébergement de votre site",
+      "Sécurité et mises à jour",
+      "1 petite modification par mois (texte, photo, horaires, coordonnées)",
+      "Réponse sous 48 h, par WhatsApp",
     ],
+    extras: [
+      "Modification supplémentaire : 30 € minimum, selon la taille du changement",
+      "Nouvelle page, refonte ou nouvelle fonctionnalité : devis sur mesure",
+    ],
+    note: "Le nom de domaine reste à votre nom. Vous l'achetez directement chez l'hébergeur de votre choix, environ 1 € la première année.",
     preset: { type: "Maintenance" },
     featured: false,
   },
@@ -154,11 +180,21 @@ export function Pricing() {
                           <span className="text-lg font-bold">{p.suffix}</span>
                         )}
                       </p>
+                      {p.altPrice && (
+                        <p className={`mt-2 text-sm font-semibold ${featured ? "text-white/90" : "text-milk/85"}`}>
+                          {p.altPrice}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                <ul className="mt-7 flex flex-col gap-3.5">
+                {p.extras && (
+                  <p className="mt-7 font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
+                    Inclus
+                  </p>
+                )}
+                <ul className={`${p.extras ? "mt-4" : "mt-7"} flex flex-col gap-3.5`}>
                   {p.features.map((f) => (
                     <li key={f} className="flex items-start gap-3 text-sm">
                       <span
@@ -175,19 +211,43 @@ export function Pricing() {
                   ))}
                 </ul>
 
-                <button
-                  type="button"
-                  onClick={() => goToBrief(p.preset)}
-                  aria-label={`${CTA_LABEL} — ${p.name}`}
-                  className={`group mt-9 flex items-center justify-center gap-2.5 rounded-full py-4.5 font-mono text-xs font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
-                    featured
-                      ? "bg-white text-lime hover:bg-white/90"
-                      : "border border-line text-milk hover:border-lime hover:bg-lime hover:text-white"
-                  } mt-auto`}
-                >
-                  {CTA_LABEL}
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
-                </button>
+                {p.extras && (
+                  <>
+                    <p className="mt-7 font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
+                      En dehors du forfait
+                    </p>
+                    <ul className="mt-4 flex flex-col gap-3.5">
+                      {p.extras.map((x) => (
+                        <li key={x} className="flex items-start gap-3 text-sm">
+                          <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-line text-fog">
+                            <Plus className="h-3 w-3" strokeWidth={3} />
+                          </span>
+                          <span className="text-fog">{x}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+
+                {/* mt-auto : bouton aligné en bas des cartes ; pt-9 : espace garanti au-dessus (mobile). */}
+                <div className="mt-auto pt-9">
+                  <button
+                    type="button"
+                    onClick={() => goToBrief(p.preset)}
+                    aria-label={`${CTA_LABEL} — ${p.name}`}
+                    className={`group flex w-full items-center justify-center gap-2.5 rounded-full py-4.5 font-mono text-xs font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
+                      featured
+                        ? "bg-white text-lime hover:bg-white/90"
+                        : "border border-line text-milk hover:border-lime hover:bg-lime hover:text-white"
+                    }`}
+                  >
+                    {CTA_LABEL}
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
+                  </button>
+                </div>
+                {p.note && (
+                  <p className="mt-4 text-xs leading-relaxed text-fog">{p.note}</p>
+                )}
               </motion.div>
             );
           })}

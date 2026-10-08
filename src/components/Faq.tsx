@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: "Pourrai-je modifier mon site moi-même ?",
-    a: "Absolument. La formule Premium inclut une interface d'administration simple pour modifier vos textes, photos et horaires en toute autonomie. Et avec la formule Sérénité, on s'en occupe pour vous.",
+    a: "Absolument. La formule Premium inclut une interface d'administration simple pour modifier vos textes, photos et horaires en toute autonomie. Et avec le Forfait Maintenance LOLITE, 1 petite modification par mois est incluse.",
   },
   {
     q: "Travaillez-vous avec des clients hors de Montpellier ?",
@@ -27,8 +27,8 @@ const FAQS = [
     a: "Chaque site est livré avec les fondations SEO : structure optimisée, vitesse de chargement, balisage sémantique. La formule Premium ajoute le SEO local avancé et l'optimisation de votre fiche Google Business.",
   },
   {
-    q: "Que comprend l'abonnement maintenance à 50 € / mois ?",
-    a: "L'hébergement haute vitesse, les sauvegardes hebdomadaires, les mises à jour de sécurité, les petites modifications de contenu et un support prioritaire sous 24h. Sans engagement de durée.",
+    q: "Que comprend le Forfait Maintenance LOLITE ?",
+    a: "Pour 25 € par mois sans engagement, ou 250 € par an (soit 2 mois offerts) : l'hébergement de votre site, la sécurité et les mises à jour, 1 petite modification par mois (texte, photo, horaires, coordonnées) et une réponse sous 48 h, par WhatsApp. En dehors du forfait, une modification supplémentaire coûte 30 € minimum selon la taille du changement ; une nouvelle page, une refonte ou une nouvelle fonctionnalité font l'objet d'un devis sur mesure. Le nom de domaine reste à votre nom : vous l'achetez directement chez l'hébergeur de votre choix, environ 1 € la première année.",
   },
 ];
 
