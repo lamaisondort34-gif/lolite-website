@@ -121,6 +121,7 @@ const EXPECTED = {
     "Que comprend le Forfait Maintenance LOLITE ?", "1 petite modification par mois",
   ],
   "cgu.html": ["Conditions générales d'utilisation", "Droit applicable et litiges"],
+  "cgv.html": ["Conditions générales de vente", "acompte de 50 %", "Forfait Maintenance LOLITE", "Droit de rétractation", "Formulaire de rétractation"],
   "mentions-legales.html": ["Mentions légales", "Ikrame Rachidi", "34090 Montpellier"],
   "confidentialite.html": ["Politique de confidentialité", "Vos droits"],
   "cookies.html": ["Politique cookies", "Google Analytics", "Consent Mode v2", "_ga_Y6Y5L2TN5N"],

@@ -24,7 +24,8 @@ export function TermsOfService() {
         Le site présente les prestations de création de sites internet de LOLITE
         et permet de demander un devis gratuit et sans engagement. Les prix
         affichés sont indicatifs (« à partir de ») : seul le devis signé engage
-        les parties, selon les conditions qui y sont précisées et notre{" "}
+        les parties, selon les conditions qui y sont précisées, nos{" "}
+        <a href="/cgv">conditions générales de vente</a> et notre{" "}
         <a href="/remboursement">politique d'annulation et de remboursement</a>.
       </p>
 
