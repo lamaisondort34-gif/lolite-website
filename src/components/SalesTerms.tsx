@@ -12,6 +12,13 @@ export function SalesTerms() {
         devis vaut acceptation des CGV, qui prévalent sur tout autre document du
         Client, sauf accord écrit contraire précisé sur le devis.
       </p>
+      <p>
+        <strong>LOLITE travaille exclusivement avec des clients
+        professionnels</strong> (entreprises, artisans, commerçants, professions
+        libérales, associations…). En signant le devis, le Client déclare
+        commander pour les besoins de son activité professionnelle. LOLITE ne
+        vend pas de prestations aux particuliers.
+      </p>
 
       <h2>2. Prestataire</h2>
       <p>
@@ -75,8 +82,8 @@ export function SalesTerms() {
           <strong>Retard de paiement :</strong> après une relance écrite restée
           sans effet pendant 15 jours, LOLITE peut suspendre ses prestations
           (travaux en cours, hébergement, maintenance) jusqu'au paiement complet.
-          Pour les clients professionnels, toute somme impayée à l'échéance
-          entraîne de plein droit des pénalités de retard égales à trois fois
+          Toute somme impayée à l'échéance entraîne de plein droit des
+          pénalités de retard égales à trois fois
           le taux d'intérêt légal, ainsi qu'une indemnité forfaitaire de 40 €
           pour frais de recouvrement (articles L441-10 et D441-5 du Code de
           commerce).
@@ -226,14 +233,8 @@ export function SalesTerms() {
           interruptions relèvent de leurs éditeurs et sont à la charge du Client.
         </li>
         <li>
-          <strong>Clients professionnels :</strong> la responsabilité de LOLITE
-          est limitée aux dommages directs et au montant payé pour la
-          prestation concernée.
-        </li>
-        <li>
-          <strong>Clients consommateurs :</strong> ils bénéficient de la garantie
-          légale de conformité prévue aux articles L224-25-12 et suivants du
-          Code de la consommation.
+          La responsabilité de LOLITE est limitée aux dommages directs et au
+          montant payé pour la prestation concernée.
         </li>
       </ul>
 
@@ -254,22 +255,27 @@ export function SalesTerms() {
         <li>elle supprime ou restitue ces données à la fin de la prestation.</li>
       </ul>
 
-      <h2>14. Droit de rétractation (clients consommateurs)</h2>
+      <h2>14. Droit de rétractation (devis signé hors établissement)</h2>
       <p>
-        Le Client consommateur dispose d'un délai de 14 jours à compter de la
-        signature du devis pour se rétracter, sans avoir à se justifier
-        (article L221-18 du Code de la consommation). Il lui suffit d'envoyer
-        une déclaration claire par écrit (par exemple par WhatsApp) ou le
-        formulaire ci-dessous. LOLITE rembourse alors toutes les sommes versées
-        sous 14 jours, par le même moyen de paiement.
+        Entre professionnels, il n'existe pas de droit de rétractation, sauf
+        dans un cas prévu par la loi (article L221-3 du Code de la
+        consommation) : le devis est signé en présence des deux parties en
+        dehors des locaux de LOLITE (par exemple dans les locaux du Client),
+        le Client emploie 5 salariés au plus, et la création d'un site
+        internet n'entre pas dans le champ de son activité principale.
       </p>
       <p>
-        Si le Client demande expressément que le travail commence avant la fin
-        de ce délai, puis se rétracte, il paie le montant correspondant au
-        travail déjà réalisé (article L221-25). Si la prestation a été
+        Dans ce cas, le Client dispose de 14 jours à compter de la signature
+        pour se rétracter, sans avoir à se justifier, par une déclaration
+        claire par écrit (par exemple par WhatsApp) ou avec le formulaire
+        ci-dessous. LOLITE rembourse alors les sommes versées sous 14 jours,
+        par le même moyen de paiement. Si le Client demande expressément que
+        le travail commence avant la fin de ce délai, puis se rétracte, il paie
+        le travail déjà réalisé (article L221-25). Si la prestation a été
         entièrement exécutée avant la fin du délai, avec son accord exprès, il
         ne peut plus se rétracter (article L221-28).
       </p>
+      <p>Un devis signé à distance (e-mail, WhatsApp, signature électronique) n'ouvre pas ce droit.</p>
 
       <h2>15. Annulation</h2>
       <p>
@@ -288,27 +294,19 @@ export function SalesTerms() {
         la prestation ; le travail réalisé est alors facturé au prorata.
       </p>
 
-      <h2>17. Médiation, droit applicable et litiges</h2>
+      <h2>17. Droit applicable et litiges</h2>
       <p>
         Les CGV sont soumises au droit français. En cas de difficulté, le Client
         contacte d'abord LOLITE pour trouver une solution amiable :{" "}
-        <a href={PHONE_LINK}>{WA_DISPLAY}</a>.
-      </p>
-      <p>
-        Le Client consommateur peut ensuite recourir gratuitement à un médiateur
-        de la consommation (articles L611-1 et suivants du Code de la
-        consommation). Coordonnées du médiateur : en cours de désignation.
-      </p>
-      <p>
-        À défaut d'accord, les litiges avec un client professionnel relèvent
-        des tribunaux du ressort de Montpellier. Le client consommateur peut
-        saisir le tribunal de son choix parmi ceux prévus par la loi.
+        <a href={PHONE_LINK}>{WA_DISPLAY}</a>. À défaut d'accord, les litiges
+        relèvent des tribunaux compétents du ressort de Montpellier.
       </p>
 
       <h2>Annexe — Formulaire de rétractation</h2>
       <p>
-        À compléter et renvoyer uniquement si vous souhaitez vous rétracter
-        (par écrit ou par WhatsApp au {WA_DISPLAY}) :
+        Uniquement dans le cas prévu à l'article 14. À compléter et renvoyer
+        si vous souhaitez vous rétracter (par écrit ou par WhatsApp au{" "}
+        {WA_DISPLAY}) :
       </p>
       <blockquote>
         À l'attention de LOLITE, {LEGAL.owner}, {LEGAL.address} :
