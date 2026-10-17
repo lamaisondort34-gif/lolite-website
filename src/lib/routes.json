@@ -43,6 +43,17 @@
       "src/lib/site.ts"
     ]
   },
+  "/cgv": {
+    "title": "Conditions générales de vente (CGV) — LOLITE Studio Web",
+    "description": "Conditions générales de vente de LOLITE : devis, prix et paiement, délais, révisions, hébergement, Forfait Maintenance, propriété du site et droit de rétractation.",
+    "priority": "0.3",
+    "changefreq": "yearly",
+    "sources": [
+      "src/components/SalesTerms.tsx",
+      "src/components/LegalLayout.tsx",
+      "src/lib/site.ts"
+    ]
+  },
   "/cookies": {
     "title": "Politique cookies — LOLITE Studio Web",
     "description": "Quels cookies utilise le site LOLITE, à quoi ils servent et comment modifier votre choix à tout moment.",

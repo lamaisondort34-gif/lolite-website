@@ -28,6 +28,7 @@ const LEGAL_LINKS = [
   { label: "Mentions légales", href: "/mentions-legales" },
   { label: "Confidentialité", href: "/confidentialite" },
   { label: "CGU", href: "/cgu" },
+  { label: "CGV", href: "/cgv" },
   { label: "Cookies", href: "/cookies" },
   { label: "Remboursement", href: "/remboursement" },
 ];

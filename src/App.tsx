@@ -26,6 +26,7 @@ const PAGE_LOADERS: Record<string, () => PageModule> = {
   "/mentions-legales": () => import("./components/MentionsLegales").then((m) => ({ default: m.MentionsLegales })),
   "/confidentialite": () => import("./components/PrivacyPolicy").then((m) => ({ default: m.PrivacyPolicy })),
   "/cgu": () => import("./components/TermsOfService").then((m) => ({ default: m.TermsOfService })),
+  "/cgv": () => import("./components/SalesTerms").then((m) => ({ default: m.SalesTerms })),
   "/cookies": () => import("./components/CookiePolicy").then((m) => ({ default: m.CookiePolicy })),
   "/remboursement": () => import("./components/RefundPolicy").then((m) => ({ default: m.RefundPolicy })),
 };

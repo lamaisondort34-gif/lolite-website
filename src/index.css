@@ -372,6 +372,10 @@ select {
   background: var(--color-carbon);
   color: var(--color-milk);
 }
+.legal blockquote {
+  border-left: 3px solid var(--color-line);
+  padding-left: 1rem;
+}
 .legal-button {
   border-radius: 999px;
   background: var(--color-lime);
