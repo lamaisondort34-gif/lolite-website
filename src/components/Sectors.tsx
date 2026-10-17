@@ -1,6 +1,5 @@
-import { motion } from "framer-motion";
 import { ArrowUpRight, Globe2, MessageCircle, Phone, Video } from "lucide-react";
-import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
+import { CTA_LABEL, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { Magnetic } from "./Magnetic";
@@ -49,12 +48,12 @@ export function Sectors() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:gap-5">
         {SECTORS.map((s, i) => (
-          <motion.article
+          <Reveal
+            as="article"
             key={s.title}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.9, ease: EASE_OUT, delay: (i % 2) * 0.12 }}
+            from={{ y: 50 }}
+            duration={0.9}
+            delay={(i % 2) * 0.12}
             className={`group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-coal ${
               i % 2 === 1 ? "lg:translate-y-10" : ""
             }`}
@@ -86,7 +85,7 @@ export function Sectors() {
                 {s.desc}
               </p>
             </div>
-          </motion.article>
+          </Reveal>
         ))}
       </div>
 

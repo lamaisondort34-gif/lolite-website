@@ -7,7 +7,7 @@ import {
   Quote,
   Star,
 } from "lucide-react";
-import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
+import { CTA_LABEL, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { Magnetic } from "./Magnetic";
@@ -45,13 +45,7 @@ export function Portfolio() {
         {/* ---- Case study ---- */}
         <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
           {/* visual */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 1, ease: EASE_OUT }}
-            className="relative"
-          >
+          <Reveal from={{ y: 50 }} margin="-80px" className="relative">
             {/* browser frame */}
             <div
               className="relative overflow-hidden rounded-2xl border border-line bg-coal shadow-[0_30px_90px_rgba(76,29,149,0.14)]"
@@ -112,7 +106,7 @@ export function Portfolio() {
                 Étude de cas
               </p>
             </motion.div>
-          </motion.div>
+          </Reveal>
 
           {/* text */}
           <div className="max-lg:mt-8">

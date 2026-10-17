@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Décide avant l'affichage s'il faut jouer l'écran de chargement (cf. public/boot.js) -->
+    <!-- Décide avant l'affichage s'il faut jouer l'intro (cf. public/boot.js) -->
     <script src="/boot.js"></script>
 
     <!-- SEO : title, description et canonical sont réécrits par page au build (scripts/postbuild.mjs) -->
@@ -77,6 +77,26 @@
       <input name="budget" />
       <textarea name="message"></textarea>
     </form>
+
+    <!-- Intro de la 1re visite (cf. public/boot.js et src/index.css) : affichée seulement
+         avec html.intro, décorative, sans texte dans le HTML (textes en CSS, non indexés). -->
+    <div class="intro-curtain fixed inset-0 z-[400] flex-col justify-between overflow-hidden bg-ink px-6 py-6 md:px-10 md:py-8" aria-hidden="true">
+      <div class="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.25em] text-fog">
+        <span class="intro-studio"></span>
+        <span class="intro-loading hidden sm:block"></span>
+        <span class="intro-est"></span>
+      </div>
+      <div class="flex items-center justify-center">
+        <div class="overflow-hidden">
+          <div class="intro-logo h-[28vw] max-h-[260px] sm:h-[22vw]"></div>
+        </div>
+      </div>
+      <div class="flex items-end justify-between">
+        <p class="intro-tagline max-w-[220px] font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-fog"></p>
+        <span class="font-display text-6xl font-bold tabular-nums text-lime md:text-8xl"><span class="intro-count"></span><span class="intro-pct text-2xl align-top md:text-4xl"></span></span>
+      </div>
+      <div class="intro-bar absolute bottom-0 left-0 h-[3px] w-full bg-lime"></div>
+    </div>
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

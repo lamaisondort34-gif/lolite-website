@@ -3,9 +3,10 @@
  *  1. prérendu : chaque route reçoit un HTML complet (tout le texte visible), plus ses propres
  *     title / description / canonical / Open Graph — lisible par Google, les IA (GPTBot,
  *     ClaudeBot, PerplexityBot…) et les aperçus de liens, sans exécuter JavaScript.
- *     dist/cgu.html est servie sur /cgu ; le navigateur hydrate ensuite le HTML (src/main.tsx) ;
+ *     dist/cgu.html est servie sur /cgu ; le navigateur hydrate ensuite le HTML (src/main.tsx).
+ *     Les polices du hero y sont préchargées ;
  *  2. génère 404.html (servie par Netlify avec un vrai code 404) ;
- *  3. vérifie le contenu prérendu (build en échec si un texte clé manque) ;
+ *  3. vérifie le contenu prérendu (build en échec si un texte clé manque ou est masqué) ;
  *  4. génère sitemap.xml à partir de toutes les routes (lastmod = dernier commit de chaque page) ;
  *  5. vérifie les liens internes du code source (build en échec si un lien est cassé).
  */
@@ -19,7 +20,16 @@ const dist = join(root, "dist");
 const ssrDir = join(root, "dist-ssr");
 const SITE = "https://lolite.fr";
 const routes = JSON.parse(readFileSync(join(root, "src/lib/routes.json"), "utf8"));
-const template = readFileSync(join(dist, "index.html"), "utf8");
+// Polices du hero (titre, accent italique, texte) préchargées : le contenu est visible dès le
+// 1er affichage, elles doivent être là tout de suite pour éviter un saut de mise en page.
+const HERO_FONTS = [/^bricolage-grotesque-latin-opsz-normal-.*\.woff2$/, /^instrument-serif-latin-400-italic-.*\.woff2$/, /^outfit-latin-wght-normal-.*\.woff2$/];
+const assets = readdirSync(join(dist, "assets"));
+const fontLinks = HERO_FONTS.map((re) => {
+  const file = assets.find((f) => re.test(f));
+  if (!file) throw new Error(`Police du hero introuvable dans dist/assets : ${re}`);
+  return `<link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin>`;
+});
+const template = readFileSync(join(dist, "index.html"), "utf8").replace("</head>", `  ${fontLinks.join("\n    ")}\n  </head>`);
 const ROOT_TAG = '<div id="root"></div>';
 if (!template.includes(ROOT_TAG)) throw new Error(`${ROOT_TAG} introuvable dans dist/index.html`);
 const { render: renderApp } = await import(pathToFileURL(join(ssrDir, "entry-server.js")).href);
@@ -124,6 +134,12 @@ for (const [file, phrases] of Object.entries(EXPECTED)) {
   const html = readFileSync(join(dist, file), "utf8");
   // Un script en ligne serait bloqué par la Content-Security-Policy (netlify.toml).
   if (/<script(?![^>]*\b(?:src|type)=)[^>]*>/i.test(html)) problems.push(`${file} : script en ligne (bloqué par la CSP)`);
+  // Tout le texte doit être visible sans attendre le JavaScript : aucun élément masqué
+  // (opacity:0, ligne sortie de son cadre), hormis le contenu replié des accordéons (height:0).
+  const hidden = [...html.matchAll(/\sstyle="([^"]*)"/g)]
+    .map((m) => m[1])
+    .filter((s) => /opacity:0(?![.\d])|translateY\(110%\)/.test(s) && !/^height:0px/.test(s));
+  if (hidden.length) problems.push(`${file} : ${hidden.length} élément(s) masqué(s) dans le HTML, ex. style="${hidden[0]}"`);
   const text = visibleText(html);
   for (const p of phrases) if (!text.includes(p)) problems.push(`${file} : texte manquant « ${p} »`);
   for (const p of FORBIDDEN) if (text.includes(p)) problems.push(`${file} : texte interdit « ${p} »`);

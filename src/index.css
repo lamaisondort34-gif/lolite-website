@@ -48,9 +48,134 @@ html {
   overflow-x: clip;
 }
 
-/* Page masquée le temps que l'écran de chargement apparaisse (cf. public/boot.js). */
-html.preload #root {
-  visibility: hidden;
+/* ——— Intro de la 1re visite (classe html.intro posée par public/boot.js) ———
+   Rideau 100 % CSS par-dessus la page, déjà affichée derrière : il ne dépend pas du
+   JavaScript de l'appli et tout est terminé en 1 s. Sans html.intro (sans JavaScript,
+   visites suivantes, animations réduites), rien n'est masqué ni animé. */
+.intro-curtain {
+  display: none;
+}
+
+@property --intro-n {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.intro .intro-curtain {
+    display: flex;
+    pointer-events: none;
+    /* intro-done : fin de l'intro, écoutée par boot.js pour retirer html.intro */
+    animation:
+      intro-out 0.4s cubic-bezier(0.76, 0, 0.24, 1) 0.4s forwards,
+      intro-done 1.05s;
+  }
+
+  /* Entrée du hero et de la navigation, pendant que le rideau se lève */
+  html.intro .intro-nav {
+    animation: intro-nav 0.45s cubic-bezier(0.76, 0, 0.24, 1) 0.45s both;
+  }
+  html.intro .intro-rise {
+    animation: intro-rise 0.38s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0.5s) both;
+  }
+  html.intro .intro-line {
+    animation: intro-line 0.38s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0.5s) both;
+  }
+  html.intro .intro-visual {
+    animation: intro-visual 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+  }
+  html.intro .intro-draw {
+    stroke-dasharray: 1;
+    animation: intro-draw 0.35s cubic-bezier(0.76, 0, 0.24, 1) 0.65s both;
+  }
+}
+
+/* Textes décoratifs du rideau : en CSS, donc absents du contenu indexé */
+.intro-studio::before {
+  content: "Studio web — Montpellier";
+}
+.intro-loading::before {
+  content: "Chargement de l'expérience";
+}
+.intro-est::before {
+  content: "EST. 2026";
+}
+.intro-tagline::before {
+  content: "Sites vitrines d'exception — livrés en 1 à 2 semaines";
+}
+.intro-pct::before {
+  content: "%";
+}
+.intro-count::before {
+  counter-reset: intro var(--intro-n);
+  content: counter(intro);
+  animation: intro-count 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+.intro-logo {
+  aspect-ratio: 547 / 520;
+  background: url("/images/logo-lolite.webp") center / contain no-repeat;
+  animation: intro-logo 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.intro-bar {
+  transform-origin: left;
+  animation: intro-bar 0.4s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+@keyframes intro-out {
+  to {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+@keyframes intro-done {
+  to {
+    --intro-done: 1;
+  }
+}
+@keyframes intro-count {
+  to {
+    --intro-n: 100;
+  }
+}
+@keyframes intro-logo {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+}
+@keyframes intro-bar {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes intro-nav {
+  from {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+}
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--y, 20px));
+  }
+}
+@keyframes intro-line {
+  from {
+    transform: translateY(110%) rotate(2deg);
+  }
+}
+@keyframes intro-visual {
+  from {
+    opacity: 0;
+    transform: scale(0.92) rotate(3deg);
+  }
+}
+@keyframes intro-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
 }
 
 html.lenis,

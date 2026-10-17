@@ -1,8 +1,6 @@
-import { useEffect, useState, type ComponentType } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useEffect, type ComponentType } from "react";
 import { initLenis, scrollTo } from "./lib/site";
 import routes from "./lib/routes.json";
-import { Preloader } from "./components/Preloader";
 import { Cursor } from "./components/Cursor";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
@@ -61,34 +59,21 @@ export function currentPath() {
 /** `path` : route affichée ; `page` : son composant, déjà chargé (cf. loadPage). */
 export default function App({ path, page: Page }: { path: string; page?: ComponentType }) {
   const isHome = path === "/";
-  // Sur l'accueil on démarre « en chargement », au serveur comme au client (sinon l'hydratation
-  // diverge). public/boot.js décide avant l'affichage s'il faut jouer le préchargeur (classe
-  // html.preload) : il n'est jamais dans le HTML prérendu, donc jamais indexé.
-  const [loading, setLoading] = useState(isHome);
-  const [showPreloader, setShowPreloader] = useState(false);
-
-  useEffect(() => {
-    if (!isHome) return;
-    if (document.documentElement.classList.contains("preload")) setShowPreloader(true);
-    else setLoading(false);
-  }, [isHome]);
+  // L'intro de la 1re visite (rideau + entrée du hero) est jouée en CSS par-dessus la page
+  // déjà affichée, cf. public/boot.js : React n'attend rien, le contenu est visible d'emblée.
 
   useEffect(() => {
     initLenis();
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = loading ? "hidden" : "";
-  }, [loading]);
-
   // Arrivée sur /#brief (depuis une autre page) : on scrolle une fois la page prête.
   useEffect(() => {
-    if (!loading && isHome && window.location.hash.length > 1) {
+    if (isHome && window.location.hash.length > 1) {
       const id = window.location.hash;
       const t = setTimeout(() => scrollTo(id), 150);
       return () => clearTimeout(t);
     }
-  }, [loading, isHome]);
+  }, [isHome]);
 
   // Titre de l'onglet (les balises meta sont aussi pré-générées au build, cf. scripts/postbuild.mjs).
   useEffect(() => {
@@ -105,16 +90,11 @@ export default function App({ path, page: Page }: { path: string; page?: Compone
         Aller au contenu
       </a>
       <Cursor />
-
-      <AnimatePresence>
-        {showPreloader && loading && <Preloader onDone={() => setLoading(false)} />}
-      </AnimatePresence>
-
-      <Nav ready={!loading} />
+      <Nav />
 
       {isHome ? (
         <main id="contenu">
-          <Hero ready={!loading} />
+          <Hero />
           <Marquee />
           <Services />
           <Process />

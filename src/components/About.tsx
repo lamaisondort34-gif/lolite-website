@@ -1,6 +1,5 @@
-import { motion } from "framer-motion";
 import { ArrowUpRight, Fingerprint, MapPin, Timer } from "lucide-react";
-import { CTA_LABEL, EASE_OUT, goToBrief } from "../lib/site";
+import { CTA_LABEL, goToBrief } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { Magnetic } from "./Magnetic";
@@ -74,13 +73,7 @@ export function About() {
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 1.1, ease: EASE_OUT }}
-          className="relative"
-        >
+        <Reveal from={{ scale: 0.94 }} duration={1.1} margin="-80px" className="relative">
           <div className="group overflow-hidden rounded-2xl border border-line">
             <img
               src="/images/about-studio-800.webp"
@@ -107,7 +100,7 @@ export function About() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
 
       {/* CTA */}
