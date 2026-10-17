@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { WA } from "../lib/site";
-import { track } from "../lib/analytics";
 
 export function WhatsAppFloat() {
   const [show, setShow] = useState(false);
@@ -25,7 +24,7 @@ export function WhatsAppFloat() {
           href={WA.devis}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => track("generate_lead", { method: "whatsapp_float" })}
+          data-wa-location="bouton_flottant"
           aria-label="Nous écrire sur WhatsApp"
           className="group fixed bottom-6 right-6 z-[150] flex items-center gap-0 rounded-full bg-lime p-4 text-white shadow-[0_10px_40px_rgba(124,58,237,0.4)] transition-colors duration-300 hover:bg-milk"
         >

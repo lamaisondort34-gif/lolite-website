@@ -4,14 +4,14 @@ import { EASE_OUT } from "../lib/site";
 import {
   ANALYTICS_ENABLED,
   getConsent,
-  loadAnalytics,
+  initAnalytics,
   setConsent,
   type Consent,
 } from "../lib/analytics";
 
 /**
  * Bandeau de consentement conforme aux recommandations CNIL :
- * - aucun traceur avant le choix,
+ * - aucun traceur avant le choix (Consent Mode v2 « tout refusé », GA chargé après « Accepter »),
  * - « Refuser » aussi visible et aussi simple que « Accepter »,
  * - choix réversible à tout moment (lien « Gérer les cookies » du footer),
  * - choix redemandé au bout de 6 mois.
@@ -21,9 +21,8 @@ export function CookieBanner() {
 
   useEffect(() => {
     if (!ANALYTICS_ENABLED) return;
-    const consent = getConsent();
-    if (consent === "accepted") loadAnalytics();
-    if (!consent) setShow(true);
+    initAnalytics();
+    if (!getConsent()) setShow(true);
 
     const reopen = () => setShow(true);
     window.addEventListener("lolite:cookies", reopen);
@@ -54,8 +53,8 @@ export function CookieBanner() {
           </h2>
           <p id="cookie-desc" className="text-sm leading-relaxed text-fog">
             Avec votre accord, nous utilisons Google Analytics pour mesurer
-            l'audience du site de façon anonyme. Aucun cookie publicitaire.
-            Vous pouvez changer d'avis à tout moment.{" "}
+            l'audience du site (pages vues, provenance des visites). Aucun
+            cookie publicitaire. Vous pouvez changer d'avis à tout moment.{" "}
             <a href="/cookies" className="text-lime underline underline-offset-2">
               En savoir plus
             </a>

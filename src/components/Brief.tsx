@@ -310,7 +310,6 @@ export function Brief() {
                 href={WA.devis}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => track("generate_lead", { method: "whatsapp_direct" })}
                 className="group flex flex-1 flex-col justify-between rounded-3xl border border-line bg-coal p-8 transition-colors duration-300 hover:border-lime/50 md:p-10"
                 data-cursor="hover"
               >

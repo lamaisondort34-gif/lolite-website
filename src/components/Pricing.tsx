@@ -1,7 +1,6 @@
-import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import { ArrowUpRight, Check, Plus, ShieldCheck, Sparkles, Zap } from "lucide-react";
-import { CTA_LABEL, EASE_OUT, goToBrief, type BriefPreset } from "../lib/site";
+import { CTA_LABEL, goToBrief, type BriefPreset } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
@@ -112,12 +111,11 @@ export function Pricing() {
             const Icon = p.icon;
             const featured = p.featured;
             return (
-              <motion.div
+              <Reveal
                 key={p.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.9, ease: EASE_OUT, delay: i * 0.12 }}
+                from={{ y: 50 }}
+                duration={0.9}
+                delay={i * 0.12}
                 className={`relative flex flex-col rounded-3xl p-8 md:p-10 ${
                   featured
                     ? "bg-lime text-white lg:-my-5 lg:py-14"
@@ -248,7 +246,7 @@ export function Pricing() {
                 {p.note && (
                   <p className="mt-4 text-xs leading-relaxed text-fog">{p.note}</p>
                 )}
-              </motion.div>
+              </Reveal>
             );
           })}
         </div>

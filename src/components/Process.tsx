@@ -1,7 +1,6 @@
-import { motion } from "framer-motion";
 import { Code2, MessagesSquare, Rocket, Search } from "lucide-react";
-import { EASE_OUT } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
+import { Reveal } from "./Reveal";
 
 const STEPS = [
   {
@@ -54,12 +53,11 @@ export function Process() {
           {STEPS.map((s, i) => {
             const Icon = s.icon;
             return (
-              <motion.div
+              <Reveal
                 key={s.num}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.8, ease: EASE_OUT, delay: i * 0.12 }}
+                from={{ y: 40 }}
+                duration={0.8}
+                delay={i * 0.12}
                 className="group relative flex min-h-[320px] flex-col justify-between overflow-hidden bg-coal p-7 transition-colors duration-500 hover:bg-carbon md:p-9"
                 data-cursor="hover"
               >
@@ -83,7 +81,7 @@ export function Process() {
                   </p>
                 </div>
                 <span className="absolute bottom-0 left-0 h-[3px] w-full origin-left scale-x-0 bg-lime transition-transform duration-500 ease-out group-hover:scale-x-100" />
-              </motion.div>
+              </Reveal>
             );
           })}
         </div>

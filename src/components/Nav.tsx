@@ -14,7 +14,7 @@ const LINKS = [
   { label: "FAQ", href: "#faq" },
 ];
 
-export function Nav({ ready }: { ready: boolean }) {
+export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -45,11 +45,9 @@ export function Nav({ ready }: { ready: boolean }) {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={ready ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-        className={`fixed inset-x-0 top-0 z-[100] transition-all duration-500 ${
+      {/* intro-nav : entrée jouée uniquement avec l'intro (cf. src/index.css) */}
+      <header
+        className={`intro-nav fixed inset-x-0 top-0 z-[100] transition-all duration-500 ${
           scrolled
             ? "border-b border-line bg-ink/80 backdrop-blur-xl"
             : "border-b border-transparent bg-transparent"
@@ -106,7 +104,7 @@ export function Nav({ ready }: { ready: boolean }) {
             </button>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile menu */}
       <AnimatePresence>

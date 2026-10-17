@@ -1,10 +1,10 @@
 import { PHONE_LINK, WA_DISPLAY } from "../lib/site";
-import { ANALYTICS_ENABLED, openCookieSettings } from "../lib/analytics";
+import { ANALYTICS_ENABLED, GA_ID, openCookieSettings } from "../lib/analytics";
 import { LegalLayout } from "./LegalLayout";
 
 export function CookiePolicy() {
   return (
-    <LegalLayout title="Politique cookies">
+    <LegalLayout title="Politique cookies" updated="17 octobre 2026">
       <h2>1. Qu'est-ce qu'un cookie ?</h2>
       <p>
         Un cookie (ou traceur) est un petit fichier déposé sur votre appareil lors
@@ -30,8 +30,14 @@ export function CookiePolicy() {
             <td>Non requis (strictement nécessaire)</td>
           </tr>
           <tr>
-            <td>_ga, _ga_* (Google Analytics 4)</td>
-            <td>Mesure d'audience anonymisée</td>
+            <td>lolite-intro (stockage de session)</td>
+            <td>Ne jouer l'animation d'accueil qu'une fois par visite</td>
+            <td>Jusqu'à la fermeture de l'onglet</td>
+            <td>Non requis (confort d'affichage)</td>
+          </tr>
+          <tr>
+            <td>{`_ga, _ga_${GA_ID.replace(/^G-/, "")} (Google Analytics 4)`}</td>
+            <td>Mesure d'audience : distinguer les visiteurs et leurs visites</td>
             <td>13 mois</td>
             <td>Oui — déposés uniquement si vous acceptez</td>
           </tr>
@@ -43,7 +49,55 @@ export function CookiePolicy() {
         leurs propres règles une fois que vous les ouvrez.
       </p>
 
-      <h2>3. Modifier votre choix</h2>
+      <h2>3. Google Analytics</h2>
+      <p>
+        Avec votre accord, nous utilisons Google Analytics 4, service de Google
+        Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irlande), pour
+        savoir comment le site est utilisé et l'améliorer.
+      </p>
+      <ul>
+        <li>
+          <strong>Ce qui est mesuré :</strong> pages consultées, provenance des
+          visites (moteur de recherche, réseau social, lien direct…), type
+          d'appareil et de navigateur, ville approximative, ainsi que deux
+          actions : l'envoi du formulaire de devis (avec le type de projet et le
+          budget choisis) et les clics sur les liens WhatsApp.
+        </li>
+        <li>
+          <strong>Ce qui n'est jamais transmis :</strong> votre nom, vos
+          coordonnées et le contenu de vos messages.
+        </li>
+        <li>
+          <strong>Consentement :</strong> le site utilise le mode consentement
+          de Google (Consent Mode v2) avec tout refusé par défaut. Le script
+          Google n'est chargé qu'après un clic sur « Accepter ». Tant que vous
+          n'avez pas choisi, ou si vous refusez, aucune donnée n'est envoyée à
+          Google et aucun cookie Google n'est déposé.
+        </li>
+        <li>
+          <strong>Pas de publicité :</strong> les fonctions publicitaires, les
+          signaux Google et la personnalisation des annonces sont désactivés.
+        </li>
+        <li>
+          <strong>Durées :</strong> cookies conservés 13 mois maximum ;
+          statistiques conservées 14 mois maximum dans Google Analytics.
+        </li>
+        <li>
+          <strong>Transferts :</strong> Google peut traiter ces données aux
+          États-Unis. Ces transferts sont encadrés par le Data Privacy Framework
+          UE–États-Unis, auquel Google LLC adhère, et par les clauses
+          contractuelles types de la Commission européenne.
+        </li>
+      </ul>
+      <p>
+        En savoir plus :{" "}
+        <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">
+          comment Google utilise les données des sites partenaires
+        </a>
+        .
+      </p>
+
+      <h2>4. Modifier votre choix</h2>
       <p>
         Vous pouvez accepter ou refuser à tout moment, aussi simplement que lors
         de votre première visite. Si vous retirez votre accord, les cookies Google
@@ -65,7 +119,7 @@ export function CookiePolicy() {
         navigateur.
       </p>
 
-      <h2>4. Contact</h2>
+      <h2>5. Contact</h2>
       <p>
         Une question ? Téléphone / WhatsApp : <a href={PHONE_LINK}>{WA_DISPLAY}</a>. Voir
         aussi notre <a href="/confidentialite">politique de confidentialité</a>.

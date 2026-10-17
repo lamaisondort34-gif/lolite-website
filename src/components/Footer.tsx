@@ -1,8 +1,6 @@
 import { ArrowUp, ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
 import {
   CTA_LABEL,
-  EASE_OUT,
   goToBrief,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
@@ -14,6 +12,7 @@ import {
 import { ANALYTICS_ENABLED, openCookieSettings } from "../lib/analytics";
 import { Magnetic } from "./Magnetic";
 import { Logo } from "./Logo";
+import { Reveal } from "./Reveal";
 
 const LINKS = [
   { label: "Expertises", href: "#services" },
@@ -148,15 +147,16 @@ export function Footer() {
 
         {/* giant wordmark */}
         <div className="relative select-none overflow-hidden border-t border-line pt-8">
-          <motion.p
-            initial={{ y: 80, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: EASE_OUT }}
+          <Reveal
+            as="p"
+            from={{ y: 80 }}
+            duration={1.2}
+            margin="0px"
+            observeParent
             className="text-center font-display text-[20vw] font-extrabold leading-[0.85] tracking-tight text-milk/[0.07] md:text-[17vw]"
           >
             Lolite
-          </motion.p>
+          </Reveal>
         </div>
 
         {/* Legal links */}
