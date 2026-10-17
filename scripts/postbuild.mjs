@@ -123,7 +123,7 @@ const EXPECTED = {
   "cgu.html": ["Conditions générales d'utilisation", "Droit applicable et litiges"],
   "mentions-legales.html": ["Mentions légales", "Ikrame Rachidi", "34090 Montpellier"],
   "confidentialite.html": ["Politique de confidentialité", "Vos droits"],
-  "cookies.html": ["Politique cookies"],
+  "cookies.html": ["Politique cookies", "Google Analytics", "Consent Mode v2", "_ga_Y6Y5L2TN5N"],
   "remboursement.html": ["Annulation et remboursement"],
   "404.html": ["Page introuvable"],
 };

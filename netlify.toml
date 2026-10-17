@@ -7,7 +7,6 @@ publish = "dist"
 
 [build.environment]
 NODE_VERSION = "22"
-# VITE_GA_ID (Google Analytics 4) se définit dans l'interface Netlify, pas ici.
 
 # ---------------------------------------------------------------------------
 # HTTPS forcé + domaine unique (sans www)
