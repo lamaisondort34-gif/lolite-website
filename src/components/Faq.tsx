@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowUpRight, MessageCircle, Plus } from "lucide-react";
 import { EASE, WA } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
@@ -81,21 +81,18 @@ export function Faq() {
                     <Plus className="h-4 w-4" />
                   </motion.span>
                 </button>
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.5, ease: EASE }}
-                      className="overflow-hidden"
-                    >
-                      <p className="max-w-3xl pb-8 pl-9 pr-4 text-sm leading-relaxed text-fog md:pl-12 md:text-base">
-                        {f.a}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Toujours présente dans le HTML (lisible par Google et les IA), repliée visuellement. */}
+                <motion.div
+                  initial={false}
+                  animate={isOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  className="overflow-hidden"
+                  inert={!isOpen}
+                >
+                  <p className="max-w-3xl pb-8 pl-9 pr-4 text-sm leading-relaxed text-fog md:pl-12 md:text-base">
+                    {f.a}
+                  </p>
+                </motion.div>
               </div>
             </Reveal>
           );

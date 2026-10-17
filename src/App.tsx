@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { useEffect, useState, type ComponentType } from "react";
 import { AnimatePresence } from "framer-motion";
 import { initLenis, scrollTo } from "./lib/site";
 import routes from "./lib/routes.json";
@@ -19,15 +19,25 @@ import { Footer } from "./components/Footer";
 import { WhatsAppFloat } from "./components/WhatsAppFloat";
 import { CookieBanner } from "./components/CookieBanner";
 
-// Pages secondaires chargées à la demande : elles n'alourdissent pas l'accueil.
-const PAGES: Record<string, React.LazyExoticComponent<() => React.JSX.Element>> = {
-  "/mentions-legales": lazy(() => import("./components/MentionsLegales").then((m) => ({ default: m.MentionsLegales }))),
-  "/confidentialite": lazy(() => import("./components/PrivacyPolicy").then((m) => ({ default: m.PrivacyPolicy }))),
-  "/cgu": lazy(() => import("./components/TermsOfService").then((m) => ({ default: m.TermsOfService }))),
-  "/cookies": lazy(() => import("./components/CookiePolicy").then((m) => ({ default: m.CookiePolicy }))),
-  "/remboursement": lazy(() => import("./components/RefundPolicy").then((m) => ({ default: m.RefundPolicy }))),
+type PageModule = Promise<{ default: ComponentType }>;
+
+// Pages secondaires dans des fichiers séparés : elles n'alourdissent pas l'accueil.
+// Chargées AVANT le rendu (src/main.tsx, src/entry-server.tsx) plutôt qu'avec React.lazy :
+// pas de <Suspense>, donc un HTML prérendu complet, sans script en ligne (interdit par la CSP).
+const PAGE_LOADERS: Record<string, () => PageModule> = {
+  "/mentions-legales": () => import("./components/MentionsLegales").then((m) => ({ default: m.MentionsLegales })),
+  "/confidentialite": () => import("./components/PrivacyPolicy").then((m) => ({ default: m.PrivacyPolicy })),
+  "/cgu": () => import("./components/TermsOfService").then((m) => ({ default: m.TermsOfService })),
+  "/cookies": () => import("./components/CookiePolicy").then((m) => ({ default: m.CookiePolicy })),
+  "/remboursement": () => import("./components/RefundPolicy").then((m) => ({ default: m.RefundPolicy })),
 };
-const NotFound = lazy(() => import("./components/NotFound").then((m) => ({ default: m.NotFound })));
+const loadNotFound = (): PageModule => import("./components/NotFound").then((m) => ({ default: m.NotFound }));
+
+/** Composant de la page à afficher (rien pour l'accueil, NotFound pour une adresse inconnue). */
+export async function loadPage(path: string): Promise<ComponentType | undefined> {
+  if (path === "/") return undefined;
+  return (await (PAGE_LOADERS[path] ?? loadNotFound)()).default;
+}
 
 // Anciennes URLs « ?page=xxx » → nouvelles URLs propres (aussi gérées en 301 côté Netlify).
 const LEGACY: Record<string, string> = {
@@ -37,7 +47,8 @@ const LEGACY: Record<string, string> = {
   refund: "/remboursement",
 };
 
-function currentPath() {
+/** Route demandée par le navigateur (les anciennes URLs « ?page= » sont réécrites). */
+export function currentPath() {
   const legacy = LEGACY[new URLSearchParams(window.location.search).get("page") ?? ""];
   if (legacy) {
     window.history.replaceState(null, "", legacy);
@@ -47,24 +58,20 @@ function currentPath() {
   return p === "" ? "/" : p;
 }
 
-function shouldShowPreloader(isHome: boolean) {
-  if (!isHome || window.location.hash) return false;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-  try {
-    // Une seule fois par session : on ne fait pas attendre un visiteur qui revient.
-    if (sessionStorage.getItem("lolite-preloaded")) return false;
-    sessionStorage.setItem("lolite-preloaded", "1");
-  } catch {
-    /* stockage indisponible */
-  }
-  return true;
-}
-
-export default function App() {
-  const [path] = useState(currentPath);
+/** `path` : route affichée ; `page` : son composant, déjà chargé (cf. loadPage). */
+export default function App({ path, page: Page }: { path: string; page?: ComponentType }) {
   const isHome = path === "/";
-  const Page = isHome ? null : PAGES[path] ?? NotFound;
-  const [loading, setLoading] = useState(() => shouldShowPreloader(isHome));
+  // Sur l'accueil on démarre « en chargement », au serveur comme au client (sinon l'hydratation
+  // diverge). public/boot.js décide avant l'affichage s'il faut jouer le préchargeur (classe
+  // html.preload) : il n'est jamais dans le HTML prérendu, donc jamais indexé.
+  const [loading, setLoading] = useState(isHome);
+  const [showPreloader, setShowPreloader] = useState(false);
+
+  useEffect(() => {
+    if (!isHome) return;
+    if (document.documentElement.classList.contains("preload")) setShowPreloader(true);
+    else setLoading(false);
+  }, [isHome]);
 
   useEffect(() => {
     initLenis();
@@ -100,7 +107,7 @@ export default function App() {
       <Cursor />
 
       <AnimatePresence>
-        {loading && <Preloader onDone={() => setLoading(false)} />}
+        {showPreloader && loading && <Preloader onDone={() => setLoading(false)} />}
       </AnimatePresence>
 
       <Nav ready={!loading} />
@@ -120,7 +127,7 @@ export default function App() {
           <Faq />
         </main>
       ) : (
-        <Suspense fallback={<div className="min-h-svh" />}>{Page && <Page />}</Suspense>
+        Page && <Page />
       )}
 
       <Footer />

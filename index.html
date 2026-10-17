@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Décide avant l'affichage s'il faut jouer l'écran de chargement (cf. public/boot.js) -->
+    <script src="/boot.js"></script>
 
     <!-- SEO : title, description et canonical sont réécrits par page au build (scripts/postbuild.mjs) -->
     <title>LOLITE — Création de sites vitrines sur-mesure à Montpellier | Livrés en 14 jours</title>
@@ -56,18 +58,15 @@
           "addressCountry": "FR"
         },
         "areaServed": ["FR", "GP", "MQ", "GF", "RE", "YT"],
-        "sameAs": ["https://www.instagram.com/lolite_agency/"]
+        "sameAs": [
+          "https://www.instagram.com/lolite_agency/",
+          "https://www.facebook.com/61584097673940"
+        ]
       }
     </script>
 
   </head>
   <body>
-    <noscript>
-      <p style="padding:24px;font-family:sans-serif">
-        Ce site nécessite JavaScript. Contactez-nous directement :
-        <a href="https://wa.me/33663530157">WhatsApp +33 6 63 53 01 57</a>
-      </p>
-    </noscript>
 
     <!-- Formulaire « fantôme » : permet à Netlify Forms de détecter le brief au déploiement. -->
     <form name="brief" data-netlify="true" netlify-honeypot="bot-field" hidden>
