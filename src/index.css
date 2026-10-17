@@ -48,6 +48,11 @@ html {
   overflow-x: clip;
 }
 
+/* Page masquée le temps que l'écran de chargement apparaisse (cf. public/boot.js). */
+html.preload #root {
+  visibility: hidden;
+}
+
 html.lenis,
 html.lenis body {
   height: auto;

@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { EASE } from "../lib/site";
 
 export function Preloader({ onDone }: { onDone: () => void }) {
   const [count, setCount] = useState(0);
   const [leaving, setLeaving] = useState(false);
+
+  // boot.js masque la page (html.preload) jusqu'à ce que le préchargeur la recouvre.
+  useLayoutEffect(() => {
+    document.documentElement.classList.remove("preload");
+  }, []);
 
   useEffect(() => {
     const duration = 900;

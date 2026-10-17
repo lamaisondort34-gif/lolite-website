@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   CalendarCheck,
@@ -109,37 +109,34 @@ export function Services() {
                   </span>
                 </button>
 
-                <AnimatePresence initial={false}>
-                  {open && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.55, ease: EASE }}
-                      className="overflow-hidden"
-                    >
-                      <div className="grid gap-6 pb-9 pl-9 pr-2 md:grid-cols-[auto_1fr_1.3fr] md:gap-12 md:pl-[4.5rem]">
-                        <span className="hidden h-14 w-14 place-items-center rounded-2xl border border-lime/30 bg-lime/10 text-lime md:grid">
-                          <Icon className="h-6 w-6" />
-                        </span>
-                        <p className="max-w-md text-sm leading-relaxed text-fog md:text-base">
-                          {s.desc}
-                        </p>
-                        <ul className="flex flex-col gap-2.5">
-                          {s.tags.map((t) => (
-                            <li
-                              key={t}
-                              className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-milk/80"
-                            >
-                              <span className="h-1 w-1 rounded-full bg-lime" />
-                              {t}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Toujours présent dans le HTML (lisible par Google et les IA), replié visuellement. */}
+                <motion.div
+                  initial={false}
+                  animate={open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+                  transition={{ duration: 0.55, ease: EASE }}
+                  className="overflow-hidden"
+                  inert={!open}
+                >
+                  <div className="grid gap-6 pb-9 pl-9 pr-2 md:grid-cols-[auto_1fr_1.3fr] md:gap-12 md:pl-[4.5rem]">
+                    <span className="hidden h-14 w-14 place-items-center rounded-2xl border border-lime/30 bg-lime/10 text-lime md:grid">
+                      <Icon className="h-6 w-6" />
+                    </span>
+                    <p className="max-w-md text-sm leading-relaxed text-fog md:text-base">
+                      {s.desc}
+                    </p>
+                    <ul className="flex flex-col gap-2.5">
+                      {s.tags.map((t) => (
+                        <li
+                          key={t}
+                          className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-milk/80"
+                        >
+                          <span className="h-1 w-1 rounded-full bg-lime" />
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
               </div>
             </Reveal>
           );

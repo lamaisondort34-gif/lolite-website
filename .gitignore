@@ -34,3 +34,6 @@ Thumbs.db
 
 # Captures d’aperçu locales (non versionnées)
 apercu/
+
+# Build serveur du prérendu (temporaire, supprimé par scripts/postbuild.mjs)
+dist-ssr/
