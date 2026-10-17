@@ -71,8 +71,9 @@ export function SalesTerms() {
       <ul>
         <li>Les prix sont en euros. {LEGAL.vat} : le prix indiqué est le prix total à payer.</li>
         <li>
-          <strong>Création de site :</strong> acompte de 50 % à la signature du
-          devis, solde à la livraison, avant la mise en ligne définitive. Un
+          <strong>Création de site :</strong> acompte d'au moins 30 % du prix à
+          la signature du devis (le montant exact figure sur le devis), puis
+          solde à la livraison, avant la mise en ligne définitive. Un
           paiement en plusieurs fois peut être accordé : l'échéancier figure
           alors sur le devis.
         </li>
