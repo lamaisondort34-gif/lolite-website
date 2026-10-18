@@ -23,7 +23,8 @@ type Plan = {
   featured: boolean;
 };
 
-const PLANS: Plan[] = [
+/** Aussi utilisé au build : offres des données structurées et /llms.txt (scripts/postbuild.mjs). */
+export const PLANS: Plan[] = [
   {
     icon: Zap,
     name: "Formule Standard",

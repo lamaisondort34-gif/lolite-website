@@ -1,3 +1,37 @@
+# robots.txt — lolite.fr
+# Tout le site est ouvert aux moteurs de recherche et aux assistants IA.
+# Un robot n'applique que le groupe le plus précis qui le nomme : chaque groupe autorise donc « / ».
+# Résumé du site pour les IA : https://lolite.fr/llms.txt
+
+# OpenAI (entraînement, recherche ChatGPT, navigation à la demande)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Google (Gemini) et Bing (Copilot)
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Tous les autres robots
 User-agent: *
 Allow: /
 
