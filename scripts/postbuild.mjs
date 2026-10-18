@@ -10,13 +10,15 @@
  *  3. vérifie le contenu prérendu (build en échec si un texte clé manque ou est masqué,
  *     ou si les données structurées sont invalides ou s'écartent de la FAQ / des tarifs affichés) ;
  *  4. génère sitemap.xml à partir de toutes les routes (lastmod = dernier commit de chaque page) ;
- *  5. vérifie les liens internes du code source (build en échec si un lien est cassé).
+ *  5. génère /llms.txt, le résumé du site pour les IA (scripts/llms.mjs), à partir des mêmes données ;
+ *  6. vérifie les liens internes du code source (build en échec si un lien est cassé).
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 import { buildStructuredData, euros } from "./structured-data.mjs";
+import { buildLlmsTxt, checkLlmsTxt } from "./llms.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -131,6 +133,8 @@ const EXPECTED = {
     "En combien de temps mon site sera-t-il en ligne ?", "Entre 1 et 2 semaines",
     "Le devis est-il vraiment gratuit ?", "Mon site sera-t-il visible sur Google ?", "Chaque site est livré avec les fondations SEO",
     "Que comprend le Forfait Maintenance LOLITE ?", "1 petite modification par mois",
+    // réalisation et avis client
+    "Toutneuf34", "Livré en 10 jours", "je recommande les yeux fermés",
   ],
   "cgu.html": ["Conditions générales d'utilisation", "Droit applicable et litiges"],
   "cgv.html": ["Conditions générales de vente", "exclusivement avec des clients professionnels", "acompte d'au moins 30 %", "Forfait Maintenance LOLITE", "Formulaire de rétractation"],
@@ -219,7 +223,13 @@ ${Object.entries(routes)
 `;
 writeFileSync(join(dist, "sitemap.xml"), sitemap);
 
-// 5. Vérification des liens internes
+// 5. /llms.txt — qui est LOLITE, services, tarifs, FAQ, contact et pages, en Markdown pour les IA
+const llms = buildLlmsTxt(ssr, routes);
+const llmsProblems = checkLlmsTxt(llms, ssr, routes);
+if (llmsProblems.length) fail("llms.txt incomplet :\n  " + llmsProblems.join("\n  "));
+writeFileSync(join(dist, "llms.txt"), llms);
+
+// 6. Vérification des liens internes
 const srcFiles = [];
 (function walk(dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
@@ -253,4 +263,4 @@ if (broken.length) {
   console.error("\n✖ Liens internes cassés :\n  " + [...new Set(broken)].join("\n  "));
   process.exit(1);
 }
-console.log(`✓ postbuild : ${Object.keys(routes).length} pages prérendues + 404.html, contenu vérifié, sitemap.xml, liens internes OK`);
+console.log(`✓ postbuild : ${Object.keys(routes).length} pages prérendues + 404.html, contenu vérifié, sitemap.xml, llms.txt, liens internes OK`);

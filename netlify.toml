@@ -119,6 +119,12 @@ for = "/images/*"
 [headers.values]
 Cache-Control = "public, max-age=2592000"
 
+# Résumé du site pour les IA (Markdown) : servi en texte UTF-8 pour que les accents restent lisibles
+[[headers]]
+for = "/llms.txt"
+[headers.values]
+Content-Type = "text/plain; charset=utf-8"
+
 # HTML : toujours revalidé pour que les mises à jour soient visibles tout de suite
 [[headers]]
 for = "/*.html"
