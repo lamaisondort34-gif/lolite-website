@@ -30,6 +30,7 @@ export function scrollTo(target: string) {
 export const SITE_URL = "https://lolite.fr";
 export const INSTAGRAM_HANDLE = "lolite.web";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
+export const FACEBOOK_URL = "https://www.facebook.com/61584097673940";
 
 /**
  * Informations légales (mentions légales, CGU, confidentialité).

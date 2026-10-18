@@ -4,7 +4,8 @@ import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { Magnetic } from "./Magnetic";
 
-const SECTORS = [
+/** Aussi utilisé au build : /llms.txt (scripts/postbuild.mjs). */
+export const SECTORS = [
   {
     img: "sector-archi",
     alt: "Villa d'architecte contemporaine en béton éclairée au crépuscule",

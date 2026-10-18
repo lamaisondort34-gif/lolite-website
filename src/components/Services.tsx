@@ -13,7 +13,8 @@ import { CTA_LABEL, EASE, goToBrief, scrollTo } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
-const SERVICES = [
+/** Aussi utilisé au build : /llms.txt (scripts/postbuild.mjs). */
+export const SERVICES = [
   {
     icon: Monitor,
     title: "Site Vitrine",

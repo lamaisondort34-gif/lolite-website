@@ -5,7 +5,8 @@ import { EASE, WA } from "../lib/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
-const FAQS = [
+/** Aussi utilisé au build : données structurées FAQPage et /llms.txt (scripts/postbuild.mjs). */
+export const FAQS = [
   {
     q: "En combien de temps mon site sera-t-il en ligne ?",
     a: "Entre 1 et 2 semaines selon la formule choisie et la rapidité de vos retours. Nous travaillons avec un planning précis : maquette sous 5 jours, site livré au plus tard au jour 14.",
