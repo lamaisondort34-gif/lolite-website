@@ -4,9 +4,11 @@
  *     title / description / canonical / Open Graph — lisible par Google, les IA (GPTBot,
  *     ClaudeBot, PerplexityBot…) et les aperçus de liens, sans exécuter JavaScript.
  *     dist/cgu.html est servie sur /cgu ; le navigateur hydrate ensuite le HTML (src/main.tsx).
- *     Les polices du hero y sont préchargées ;
+ *     Les polices du hero y sont préchargées, les données structurées JSON-LD injectées
+ *     (scripts/structured-data.mjs : fiche entreprise + offres partout, FAQ sur l'accueil) ;
  *  2. génère 404.html (servie par Netlify avec un vrai code 404) ;
- *  3. vérifie le contenu prérendu (build en échec si un texte clé manque ou est masqué) ;
+ *  3. vérifie le contenu prérendu (build en échec si un texte clé manque ou est masqué,
+ *     ou si les données structurées sont invalides ou s'écartent de la FAQ / des tarifs affichés) ;
  *  4. génère sitemap.xml à partir de toutes les routes (lastmod = dernier commit de chaque page) ;
  *  5. vérifie les liens internes du code source (build en échec si un lien est cassé).
  */
@@ -14,6 +16,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
+import { buildStructuredData, euros } from "./structured-data.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -29,10 +32,17 @@ const fontLinks = HERO_FONTS.map((re) => {
   if (!file) throw new Error(`Police du hero introuvable dans dist/assets : ${re}`);
   return `<link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin>`;
 });
-const template = readFileSync(join(dist, "index.html"), "utf8").replace("</head>", `  ${fontLinks.join("\n    ")}\n  </head>`);
+const ssr = await import(pathToFileURL(join(ssrDir, "entry-server.js")).href);
+const { render: renderApp, FAQS, PLANS, INSTAGRAM_URL, FACEBOOK_URL } = ssr;
+const { business, faq } = buildStructuredData(ssr);
+// Bloc de données (non exécuté, admis par la CSP) ; « < » échappé : le contenu ne peut pas fermer la balise.
+const ldScript = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
+const template = readFileSync(join(dist, "index.html"), "utf8").replace(
+  "</head>",
+  () => `  ${[...fontLinks, ldScript(business)].join("\n    ")}\n  </head>`,
+);
 const ROOT_TAG = '<div id="root"></div>';
 if (!template.includes(ROOT_TAG)) throw new Error(`${ROOT_TAG} introuvable dans dist/index.html`);
-const { render: renderApp } = await import(pathToFileURL(join(ssrDir, "entry-server.js")).href);
 
 const fail = (msg) => {
   console.error(`\n✖ ${msg}`);
@@ -50,7 +60,7 @@ if (missing.length || orphans.length)
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 
-async function page({ path, title, description, url, robots }) {
+async function page({ path, title, description, url, robots, head }) {
   const t = esc(title);
   const d = esc(description);
   let html = template
@@ -70,6 +80,7 @@ async function page({ path, title, description, url, robots }) {
       .replace(/\s*<meta property="og:url"[^>]*>/, "");
   }
   if (robots) html = html.replace(/(<meta name="robots" content=")[^"]*/, `$1${robots}`);
+  if (head) html = html.replace("</head>", () => `  ${head}\n  </head>`);
   const appHtml = await renderApp(path);
   return html.replace(ROOT_TAG, `<div id="root">${appHtml}</div>`);
 }
@@ -78,7 +89,8 @@ async function page({ path, title, description, url, robots }) {
 for (const [path, meta] of Object.entries(routes)) {
   const out = path === "/" ? join(dist, "index.html") : join(dist, `${path.slice(1)}.html`);
   mkdirSync(dirname(out), { recursive: true });
-  writeFileSync(out, await page({ ...meta, path, url: SITE + path }));
+  // FAQPage sur l'accueil seulement : la FAQ n'est affichée que là.
+  writeFileSync(out, await page({ ...meta, path, url: SITE + path, head: path === "/" ? ldScript(faq) : "" }));
 }
 
 // 2. Page 404 (chemin inconnu → composant NotFound, comme dans le navigateur)
@@ -131,10 +143,28 @@ const EXPECTED = {
 // L'écran de chargement et l'ancien message « JavaScript requis » ne doivent jamais être indexés.
 const FORBIDDEN = ["Chargement de l'expérience", "EST. 2026", "Ce site nécessite JavaScript"];
 const problems = [];
+// Blocs JSON-LD d'une page (un bloc illisible est signalé puis ignoré).
+function jsonLd(html, file) {
+  return [...html.matchAll(/<script\b[^>]*\btype="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].flatMap(([, json]) => {
+    try {
+      return [JSON.parse(json)];
+    } catch (e) {
+      problems.push(`${file} : JSON-LD illisible (${e.message})`);
+      return [];
+    }
+  });
+}
+let homeLd = [];
 for (const [file, phrases] of Object.entries(EXPECTED)) {
   const html = readFileSync(join(dist, file), "utf8");
   // Un script en ligne serait bloqué par la Content-Security-Policy (netlify.toml).
   if (/<script(?![^>]*\b(?:src|type)=)[^>]*>/i.test(html)) problems.push(`${file} : script en ligne (bloqué par la CSP)`);
+  // Données structurées : fiche entreprise partout, FAQ sur l'accueil seulement.
+  const ld = jsonLd(html, file);
+  if (file === "index.html") homeLd = ld;
+  const types = ld.map((b) => b["@type"]).sort().join(", ");
+  const want = file === "index.html" ? "FAQPage, ProfessionalService" : "ProfessionalService";
+  if (types !== want) problems.push(`${file} : données structurées « ${types || "∅"} » au lieu de « ${want} »`);
   // Tout le texte doit être visible sans attendre le JavaScript : aucun élément masqué
   // (opacity:0, ligne sortie de son cadre), hormis le contenu replié des accordéons (height:0).
   const hidden = [...html.matchAll(/\sstyle="([^"]*)"/g)]
@@ -144,6 +174,26 @@ for (const [file, phrases] of Object.entries(EXPECTED)) {
   const text = visibleText(html);
   for (const p of phrases) if (!text.includes(p)) problems.push(`${file} : texte manquant « ${p} »`);
   for (const p of FORBIDDEN) if (text.includes(p)) problems.push(`${file} : texte interdit « ${p} »`);
+}
+// JSON-LD de l'accueil fidèle à ce qui est affiché : questions de la FAQ, prix des formules, réseaux.
+const faqLd = homeLd.find((b) => b["@type"] === "FAQPage");
+const bizLd = homeLd.find((b) => b["@type"] === "ProfessionalService");
+if (faqLd) {
+  const qs = faqLd.mainEntity ?? [];
+  if (qs.length !== FAQS.length || FAQS.some((f, i) => qs[i]?.name !== f.q || qs[i]?.acceptedAnswer?.text !== f.a))
+    problems.push(`index.html : FAQPage (${qs.length} questions) différente de la FAQ affichée (${FAQS.length} questions)`);
+}
+if (bizLd) {
+  for (const u of [INSTAGRAM_URL, FACEBOOK_URL]) if (!bizLd.sameAs?.includes(u)) problems.push(`index.html : sameAs sans ${u}`);
+  const offers = bizLd.makesOffer ?? [];
+  if (offers.length !== PLANS.length) problems.push(`index.html : ${offers.length} offres en JSON-LD pour ${PLANS.length} formules affichées`);
+  for (const plan of PLANS) {
+    const shown = [plan.price, plan.altPrice].filter(Boolean).map(euros);
+    const o = offers.find((x) => x.name === plan.name);
+    const got = [o?.priceSpecification ?? []].flat().map((s) => s.minPrice ?? s.price);
+    if (o?.price !== shown[0] || got.join(" + ") !== shown.join(" + "))
+      problems.push(`index.html : offre « ${plan.name} » à ${got.join(" + ") || "∅"} € en JSON-LD, ${shown.join(" + ")} € affichés`);
+  }
 }
 if (problems.length) fail("Contenu prérendu incomplet :\n  " + problems.join("\n  "));
 
