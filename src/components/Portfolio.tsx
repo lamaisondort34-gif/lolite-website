@@ -213,8 +213,16 @@ export function Portfolio() {
               </blockquote>
 
               <figcaption className="mt-9 flex items-center gap-4">
-                <span className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full bg-lime font-display text-base font-extrabold text-white">
-                  T34
+                <span className="grid h-16 w-32 shrink-0 place-items-center overflow-hidden rounded-2xl border border-line bg-coal px-2">
+                  <img
+                    src="/images/client-toutneuf34-logo.webp"
+                    width={256}
+                    height={127}
+                    alt="Logo Toutneuf34"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-auto w-full"
+                  />
                 </span>
                 <div>
                   <p className="font-display text-lg font-bold text-milk">
