@@ -1,6 +1,6 @@
 /**
  * Données structurées JSON-LD (schema.org), injectées au build par scripts/postbuild.mjs :
- * fiche entreprise et offres (toutes les pages), FAQ (accueil). Tout vient des données mêmes
+ * fiche entreprise et offres (toutes les pages), site et FAQ (accueil). Tout vient des données mêmes
  * de la page (src/entry-server.tsx) : aucun prix ni texte recopié, rien ne peut contredire l'affichage.
  */
 
@@ -39,21 +39,38 @@ function offer(plan, url) {
   };
 }
 
-/** `data` : le module src/entry-server.tsx compilé (dist-ssr/entry-server.js). */
-export function buildStructuredData({ FAQS, PLANS, SITE_URL, INSTAGRAM_URL, FACEBOOK_URL, LEGAL, WA_NUMBER }) {
+// Nom de marque et variantes : le même partout (titres, Open Graph, manifeste) pour que moteurs
+// et IA relient toutes les mentions à une seule entreprise.
+const BRAND = "Lolite";
+const ALT_NAMES = ["LOLITE", "LOLITE Studio Web"];
+// « France entière · DOM-TOM » (accroche du site) : départements d'outre-mer.
+const DOM = ["Guadeloupe", "Martinique", "Guyane", "La Réunion", "Mayotte"];
+
+/**
+ * `data` : le module src/entry-server.tsx compilé (dist-ssr/entry-server.js) ;
+ * `description` : la meta description de l'accueil (src/lib/routes.json).
+ */
+export function buildStructuredData(
+  { FAQS, PLANS, SERVICES, SITE_URL, INSTAGRAM_URL, FACEBOOK_URL, LEGAL, WA_NUMBER },
+  { description },
+) {
   // Même adresse que les mentions légales : « rue, code postal ville, France ».
   const address = /^(.+), (\d{5}) ([^,]+), France$/.exec(LEGAL.address);
   if (!address) throw new Error(`Adresse inattendue dans LEGAL.address : « ${LEGAL.address} »`);
 
+  const id = `${SITE_URL}/#entreprise`;
+  const telephone = `+${WA_NUMBER}`;
   const business = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "LOLITE Studio Web",
+    "@id": id,
+    name: BRAND,
+    alternateName: ALT_NAMES,
     url: `${SITE_URL}/`,
     logo: `${SITE_URL}/icon-512.png`,
     image: `${SITE_URL}/og-image.jpg`,
-    description: "Création de sites vitrines sur-mesure, livrés en 1 à 2 semaines.",
-    telephone: `+${WA_NUMBER}`,
+    description,
+    telephone,
     priceRange: "€€",
     address: {
       "@type": "PostalAddress",
@@ -62,7 +79,21 @@ export function buildStructuredData({ FAQS, PLANS, SITE_URL, INSTAGRAM_URL, FACE
       addressLocality: address[3],
       addressCountry: "FR",
     },
-    areaServed: ["FR", "GP", "MQ", "GF", "RE", "YT"],
+    founder: { "@type": "Person", name: LEGAL.owner },
+    areaServed: [
+      { "@type": "City", name: address[3] },
+      { "@type": "AdministrativeArea", name: "Hérault" },
+      { "@type": "Country", name: "France" },
+      ...DOM.map((name) => ({ "@type": "AdministrativeArea", name })),
+    ],
+    knowsAbout: ["Création de sites internet", ...SERVICES.map((s) => s.title)],
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone,
+      contactType: "customer service",
+      areaServed: "FR",
+      availableLanguage: "French",
+    },
     sameAs: [INSTAGRAM_URL, FACEBOOK_URL],
     makesOffer: PLANS.map((p) => offer(p, `${SITE_URL}/#tarifs`)),
   };
@@ -77,5 +108,17 @@ export function buildStructuredData({ FAQS, PLANS, SITE_URL, INSTAGRAM_URL, FACE
     })),
   };
 
-  return { business, faq };
+  // Site (accueil) : nom de site affiché par Google dans ses résultats.
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#site`,
+    url: `${SITE_URL}/`,
+    name: BRAND,
+    alternateName: ALT_NAMES,
+    inLanguage: "fr-FR",
+    publisher: { "@id": id },
+  };
+
+  return { business, faq, website };
 }

@@ -53,8 +53,12 @@ export function currentPath() {
     window.history.replaceState(null, "", legacy);
     return legacy;
   }
-  const p = window.location.pathname.replace(/\/+$/, "");
-  return p === "" ? "/" : p;
+  // /index.html, /cgu.html… servies telles quelles par Netlify : même page que l'adresse propre,
+  // qu'on rétablit dans la barre d'adresse (sinon l'appli afficherait « Page introuvable »).
+  const raw = window.location.pathname;
+  const p = raw.replace(/(\/index)?\.html$/, "").replace(/\/+$/, "") || "/";
+  if (raw.endsWith(".html")) window.history.replaceState(null, "", p + window.location.search + window.location.hash);
+  return p;
 }
 
 /** `path` : route affichée ; `page` : son composant, déjà chargé (cf. loadPage). */
@@ -79,7 +83,7 @@ export default function App({ path, page: Page }: { path: string; page?: Compone
   // Titre de l'onglet (les balises meta sont aussi pré-générées au build, cf. scripts/postbuild.mjs).
   useEffect(() => {
     const meta = (routes as Record<string, { title: string }>)[path];
-    document.title = meta ? meta.title : "Page introuvable — LOLITE Studio Web";
+    document.title = meta ? meta.title : "Page introuvable | Lolite";
   }, [path]);
 
   return (
