@@ -63,14 +63,14 @@ export function Hero() {
                     Des sites web
                   </span>
                 </span>
-              </span>
+              </span>{" "}
               <span className="block overflow-hidden pb-[0.14em] -mb-[0.14em]">
                 <span className="intro-line block [--d:0.56s]">
                   <span className="serif-accent text-[clamp(3.3rem,10vw,9.25rem)] font-normal normal-case text-lime">
                     d'exception,
                   </span>
                 </span>
-              </span>
+              </span>{" "}
               <span className="block overflow-hidden">
                 <span className="intro-line block [--d:0.62s]">
                   <span className="text-[clamp(3rem,9vw,8.25rem)]">
@@ -101,10 +101,10 @@ export function Hero() {
             <p
               className="intro-rise mt-8 max-w-xl [--d:0.58s] [--y:24px] text-base leading-relaxed text-fog md:text-lg"
             >
-              <span className="text-milk">LOLITE</span> conçoit des sites
-              vitrines sur-mesure qui subliment votre savoir-faire. Design
-              premium, SEO local inclus, zéro frais caché — et un devis gratuit
-              sous 24 à 48h.
+              <span className="text-milk">LOLITE</span>, agence web à Montpellier,
+              conçoit des sites vitrines sur-mesure qui subliment le savoir-faire
+              des artisans, commerçants et entreprises. Design premium, SEO local
+              inclus, zéro frais caché — et un devis gratuit sous 24 à 48h.
             </p>
 
             <div className="intro-rise mt-9 flex flex-wrap items-center gap-4 [--d:0.6s] [--y:24px]">
@@ -145,7 +145,9 @@ export function Hero() {
                   sizes="440px"
                   width={800}
                   height={1000}
-                  fetchPriority="high"
+                  // Masquée sur mobile (lg:block) : chargement différé, pour ne pas la télécharger
+                  // en priorité sur téléphone à la place du texte et des polices.
+                  loading="lazy"
                   decoding="async"
                   alt="Ruban de verre violet en mouvement, visuel de l'identité LOLITE"
                   className="aspect-[4/5] w-full object-cover"

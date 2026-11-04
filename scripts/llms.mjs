@@ -48,7 +48,7 @@ export function buildLlmsTxt(data, routes) {
   add(
     "# LOLITE",
     "",
-    `> LOLITE est un studio web indépendant basé à Montpellier qui crée des sites vitrines sur-mesure pour les professionnels, livrés en 1 à 2 semaines${entry ? `, ${lower(entry.prefix)} ${entry.price}` : ""}. Clientèle professionnelle uniquement (B2B). Travail 100 % à distance, à Montpellier, partout en France et dans les DOM-TOM. Contact par WhatsApp ou téléphone au ${WA_DISPLAY} ; devis gratuit.`,
+    `> LOLITE (Lolite) est une agence web indépendante basée à Montpellier qui crée des sites internet et des sites vitrines sur-mesure pour les professionnels (artisans, commerçants, entreprises), livrés en 1 à 2 semaines${entry ? `, ${lower(entry.prefix)} ${entry.price}` : ""}. Clientèle professionnelle uniquement (B2B). Travail 100 % à distance, à Montpellier, partout en France et dans les DOM-TOM. Contact par WhatsApp ou téléphone au ${WA_DISPLAY} ; devis gratuit.`,
     "",
     `Site : ${SITE_URL}`,
     "",
@@ -57,8 +57,8 @@ export function buildLlmsTxt(data, routes) {
   add(
     "## Qui est LOLITE",
     "",
-    "- Studio web indépendant basé à Montpellier (Hérault, France).",
-    `- Studio tenu par ${LEGAL.owner} — ${lower(LEGAL.status)}.`,
+    "- Agence web indépendante (studio web) basée à Montpellier (Hérault, France).",
+    `- Agence tenue par ${LEGAL.owner} — ${lower(LEGAL.status)}.`,
     "- Métier unique : la création de sites vitrines sur-mesure, livrés en 1 à 2 semaines.",
     "- Clientèle professionnelle uniquement (entreprises, artisans, commerçants, professions libérales, associations) ; pas de prestations aux particuliers.",
     "- Zone d'intervention : Montpellier, France entière et DOM-TOM, 100 % à distance (visio, WhatsApp, téléphone).",

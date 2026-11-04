@@ -10,7 +10,8 @@
  *  3. vérifie le contenu prérendu (build en échec si un texte clé manque ou est masqué,
  *     ou si les données structurées sont invalides ou s'écartent de la FAQ / des tarifs affichés) ;
  *  4. génère sitemap.xml à partir de toutes les routes (lastmod = dernier commit de chaque page) ;
- *  5. génère /llms.txt, le résumé du site pour les IA (scripts/llms.mjs), à partir des mêmes données ;
+ *  5. génère /llms.txt, le résumé du site pour les IA (scripts/llms.mjs), à partir des mêmes données,
+ *     et _redirects (adresses en .html → adresse propre, en 301) ;
  *  6. vérifie les liens internes du code source (build en échec si un lien est cassé).
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync } from "node:fs";
@@ -36,7 +37,7 @@ const fontLinks = HERO_FONTS.map((re) => {
 });
 const ssr = await import(pathToFileURL(join(ssrDir, "entry-server.js")).href);
 const { render: renderApp, FAQS, PLANS, INSTAGRAM_URL, FACEBOOK_URL } = ssr;
-const { business, faq } = buildStructuredData(ssr);
+const { business, faq, website } = buildStructuredData(ssr, { description: routes["/"].description });
 // Bloc de données (non exécuté, admis par la CSP) ; « < » échappé : le contenu ne peut pas fermer la balise.
 const ldScript = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
 const template = readFileSync(join(dist, "index.html"), "utf8").replace(
@@ -91,8 +92,9 @@ async function page({ path, title, description, url, robots, head }) {
 for (const [path, meta] of Object.entries(routes)) {
   const out = path === "/" ? join(dist, "index.html") : join(dist, `${path.slice(1)}.html`);
   mkdirSync(dirname(out), { recursive: true });
-  // FAQPage sur l'accueil seulement : la FAQ n'est affichée que là.
-  writeFileSync(out, await page({ ...meta, path, url: SITE + path, head: path === "/" ? ldScript(faq) : "" }));
+  // Site et FAQPage sur l'accueil seulement : la FAQ n'est affichée que là.
+  const head = path === "/" ? [ldScript(website), ldScript(faq)].join("\n    ") : "";
+  writeFileSync(out, await page({ ...meta, path, url: SITE + path, head }));
 }
 
 // 2. Page 404 (chemin inconnu → composant NotFound, comme dans le navigateur)
@@ -100,7 +102,7 @@ writeFileSync(
   join(dist, "404.html"),
   await page({
     path: "/__page-introuvable__",
-    title: "Page introuvable — LOLITE Studio Web",
+    title: "Page introuvable | Lolite",
     description: "Cette page n'existe pas ou a été déplacée. Retrouvez nos sites vitrines sur-mesure sur la page d'accueil.",
     url: null,
     robots: "noindex, follow",
@@ -123,6 +125,7 @@ const EXPECTED = {
   "index.html": [
     // titres
     "Des sites web", "d'exception,", "livrés en", "14 jours",
+    "agence web à Montpellier", "artisans, commerçants et entreprises",
     "Un seul métier", "De l'idée au site", "Pensé pour votre", "Des projets qui", "Des prix clairs", "Lancez votre projet", "Les questions",
     // services (y compris ceux repliés)
     "Site Vitrine", "Portfolio & Book Créatif", "Prise de RDV & Réservation", "SEO & Référencement Google", "Refonte & Modernisation", "Forfait Maintenance LOLITE",
@@ -167,8 +170,28 @@ for (const [file, phrases] of Object.entries(EXPECTED)) {
   const ld = jsonLd(html, file);
   if (file === "index.html") homeLd = ld;
   const types = ld.map((b) => b["@type"]).sort().join(", ");
-  const want = file === "index.html" ? "FAQPage, ProfessionalService" : "ProfessionalService";
+  const want = file === "index.html" ? "FAQPage, ProfessionalService, WebSite" : "ProfessionalService";
   if (types !== want) problems.push(`${file} : données structurées « ${types || "∅"} » au lieu de « ${want} »`);
+  // Balises SEO de base : un seul H1, titre et description affichables en entier dans Google,
+  // adresse canonique propre, aucune consigne « noindex » sur une page à indexer.
+  // Titres lus comme du texte brut (robots sans rendu, IA) : des lignes en blocs séparés sans espace
+  // collent les mots (« webd'exception »). On compare le texte avec et sans séparation des balises.
+  for (const [, tag, inner] of html.matchAll(/<(h[1-3])\b[^>]*>([\s\S]*?)<\/\1>/g)) {
+    const words = (sep) => inner.replace(/<svg[\s\S]*?<\/svg>|<!--[\s\S]*?-->/g, "").replace(/<[^>]+>/g, sep).split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w));
+    if (words("").length < words(" ").length) problems.push(`${file} : mots collés dans un <${tag}> « ${words("").join(" ")} »`);
+  }
+  const h1 = (html.match(/<h1\b/g) ?? []).length;
+  if (h1 !== 1) problems.push(`${file} : ${h1} balise(s) <h1> au lieu d'une`);
+  const title = /<title>([^<]*)<\/title>/.exec(html)?.[1] ?? "";
+  const desc = /<meta name="description" content="([^"]*)"/.exec(html)?.[1] ?? "";
+  if (!title || title.length > 65) problems.push(`${file} : titre de ${title.length} caractères (65 max) « ${title} »`);
+  if (desc.length < 70 || desc.length > 160) problems.push(`${file} : meta description de ${desc.length} caractères (70 à 160)`);
+  const route = file === "index.html" ? "/" : `/${file.replace(/\.html$/, "")}`;
+  if (routes[route]) {
+    const canonical = /<link rel="canonical" href="([^"]*)"/.exec(html)?.[1];
+    if (canonical !== SITE + route) problems.push(`${file} : canonical « ${canonical ?? "∅"} » au lieu de « ${SITE + route} »`);
+    if (/<meta name="robots" content="[^"]*noindex/.test(html)) problems.push(`${file} : marquée noindex`);
+  }
   // Tout le texte doit être visible sans attendre le JavaScript : aucun élément masqué
   // (opacity:0, ligne sortie de son cadre), hormis le contenu replié des accordéons (height:0).
   const hidden = [...html.matchAll(/\sstyle="([^"]*)"/g)]
@@ -187,6 +210,8 @@ if (faqLd) {
   if (qs.length !== FAQS.length || FAQS.some((f, i) => qs[i]?.name !== f.q || qs[i]?.acceptedAnswer?.text !== f.a))
     problems.push(`index.html : FAQPage (${qs.length} questions) différente de la FAQ affichée (${FAQS.length} questions)`);
 }
+const siteLd = homeLd.find((b) => b["@type"] === "WebSite");
+if (siteLd && bizLd && siteLd.publisher?.["@id"] !== bizLd["@id"]) problems.push("index.html : WebSite non relié à la fiche entreprise");
 if (bizLd) {
   for (const u of [INSTAGRAM_URL, FACEBOOK_URL]) if (!bizLd.sameAs?.includes(u)) problems.push(`index.html : sameAs sans ${u}`);
   const offers = bizLd.makesOffer ?? [];
@@ -228,6 +253,11 @@ const llms = buildLlmsTxt(ssr, routes);
 const llmsProblems = checkLlmsTxt(llms, ssr, routes);
 if (llmsProblems.length) fail("llms.txt incomplet :\n  " + llmsProblems.join("\n  "));
 writeFileSync(join(dist, "llms.txt"), llms);
+
+// /index.html, /cgu.html… existent aussi sous ce nom chez Netlify : redirection permanente vers
+// l'adresse propre, pour qu'il n'y ait qu'une URL par page dans Google.
+const htmlRedirects = Object.keys(routes).map((p) => (p === "/" ? "/index.html  /  301!" : `${p}.html  ${p}  301!`));
+writeFileSync(join(dist, "_redirects"), `# Généré par scripts/postbuild.mjs\n${htmlRedirects.join("\n")}\n`);
 
 // 6. Vérification des liens internes
 const srcFiles = [];

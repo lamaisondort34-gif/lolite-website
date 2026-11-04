@@ -56,32 +56,35 @@ export function Faq() {
           return (
             <Reveal key={f.q} delay={i * 0.05}>
               <div className="border-b border-line" data-cursor="hover">
-                <button
-                  onClick={() => setOpen(isOpen ? -1 : i)}
-                  className="flex w-full items-center gap-6 py-6 text-left md:py-7"
-                >
-                  <span
-                    className={`font-mono text-xs ${isOpen ? "text-lime" : "text-fog"}`}
+                {/* Question (h3, sans style propre) : structure lisible par les moteurs et les IA. */}
+                <h3>
+                  <button
+                    onClick={() => setOpen(isOpen ? -1 : i)}
+                    className="flex w-full items-center gap-6 py-6 text-left md:py-7"
                   >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    className={`flex-1 font-display text-lg font-bold tracking-tight transition-colors duration-300 md:text-2xl ${
-                      isOpen ? "text-milk" : "text-milk/70"
-                    }`}
-                  >
-                    {f.q}
-                  </span>
-                  <motion.span
-                    animate={{ rotate: isOpen ? 45 : 0 }}
-                    transition={{ duration: 0.4, ease: EASE }}
-                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border transition-colors duration-300 ${
-                      isOpen ? "border-lime bg-lime text-white" : "border-line text-fog"
-                    }`}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </motion.span>
-                </button>
+                    <span
+                      className={`font-mono text-xs ${isOpen ? "text-lime" : "text-fog"}`}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>{" "}
+                    <span
+                      className={`flex-1 font-display text-lg font-bold tracking-tight transition-colors duration-300 md:text-2xl ${
+                        isOpen ? "text-milk" : "text-milk/70"
+                      }`}
+                    >
+                      {f.q}
+                    </span>
+                    <motion.span
+                      animate={{ rotate: isOpen ? 45 : 0 }}
+                      transition={{ duration: 0.4, ease: EASE }}
+                      className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border transition-colors duration-300 ${
+                        isOpen ? "border-lime bg-lime text-white" : "border-line text-fog"
+                      }`}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </motion.span>
+                  </button>
+                </h3>
                 {/* Toujours présente dans le HTML (lisible par Google et les IA), repliée visuellement. */}
                 <motion.div
                   initial={false}

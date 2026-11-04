@@ -54,7 +54,7 @@ export function Footer() {
               Prêt à vous démarquer ?
             </p>
             <h2 className="mt-4 font-display text-4xl font-extrabold leading-[1.04] tracking-tight text-milk md:text-6xl">
-              Votre site en 14 jours.
+              Votre site en 14 jours.{" "}
               <br />
               <span className="serif-accent text-lime">On commence quand ?</span>
             </h2>

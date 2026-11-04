@@ -81,34 +81,37 @@ export function Services() {
                 data-cursor="hover"
                 onMouseEnter={() => setActive(i)}
               >
-                <button
-                  onClick={() => setActive(open ? -1 : i)}
-                  className="flex w-full items-center gap-5 py-6 text-left md:gap-10 md:py-8"
-                >
-                  <span
-                    className={`font-mono text-xs transition-colors duration-300 ${
-                      open ? "text-lime" : "text-fog"
-                    }`}
+                {/* Titre de service (h3, sans style propre) : structure lisible par les moteurs et les IA. */}
+                <h3>
+                  <button
+                    onClick={() => setActive(open ? -1 : i)}
+                    className="flex w-full items-center gap-5 py-6 text-left md:gap-10 md:py-8"
                   >
-                    0{i + 1}
-                  </span>
-                  <span
-                    className={`flex-1 font-display text-xl font-bold tracking-tight transition-all duration-500 md:text-4xl ${
-                      open ? "translate-x-2 text-milk md:translate-x-4" : "text-fog group-hover:text-milk"
-                    }`}
-                  >
-                    {s.title}
-                  </span>
-                  <span
-                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-full border transition-all duration-500 md:h-14 md:w-14 ${
-                      open
-                        ? "rotate-0 border-lime bg-lime text-white"
-                        : "rotate-45 border-line text-fog group-hover:border-fog"
-                    }`}
-                  >
-                    <ArrowUpRight className="h-4 w-4 md:h-5 md:w-5" />
-                  </span>
-                </button>
+                    <span
+                      className={`font-mono text-xs transition-colors duration-300 ${
+                        open ? "text-lime" : "text-fog"
+                      }`}
+                    >
+                      0{i + 1}
+                    </span>{" "}
+                    <span
+                      className={`flex-1 font-display text-xl font-bold tracking-tight transition-all duration-500 md:text-4xl ${
+                        open ? "translate-x-2 text-milk md:translate-x-4" : "text-fog group-hover:text-milk"
+                      }`}
+                    >
+                      {s.title}
+                    </span>
+                    <span
+                      className={`grid h-11 w-11 shrink-0 place-items-center rounded-full border transition-all duration-500 md:h-14 md:w-14 ${
+                        open
+                          ? "rotate-0 border-lime bg-lime text-white"
+                          : "rotate-45 border-line text-fog group-hover:border-fog"
+                      }`}
+                    >
+                      <ArrowUpRight className="h-4 w-4 md:h-5 md:w-5" />
+                    </span>
+                  </button>
+                </h3>
 
                 {/* Toujours présent dans le HTML (lisible par Google et les IA), replié visuellement. */}
                 <motion.div
